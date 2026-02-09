@@ -1,6 +1,6 @@
 # McLogs Next UI
 
-现代化 Minecraft 服务器日志分析平台前端
+McLogs-Next-API的官方开源Web UI实现方案，基于Vue+Typesctipt+TailwindCSS。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)
 [![Vue](https://img.shields.io/badge/Vue.js-3.x-4FC08D.svg?style=flat-square&logo=vue.js&logoColor=white)](https://vuejs.org/)
