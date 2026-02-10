@@ -203,8 +203,9 @@ const copyShareMessage = async () => {
     shareMessage += `是${log.value.title} `;
   }
 
-  shareMessage += '的，链接如下：\n\n';
+  shareMessage += '，网站要求我复制链接给可以帮助我的人，链接如下：\n';
   shareMessage += window.location.href;
+  shareMessage += '\n不管能不能解决问题，先谢谢大佬！';
 
   try {
     await navigator.clipboard.writeText(shareMessage);
