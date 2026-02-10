@@ -405,7 +405,7 @@ const scrollToFooter = () => {
            <!-- Hint for users who don't understand the page -->
            <div class="mt-3 p-3 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/30 rounded-md transition-colors duration-300">
                <p class="text-sm text-blue-800 dark:text-blue-200 transition-colors duration-300">
-                   <strong>{{ t('info') }}：</strong>{{ t('tips') }}{{ t('log') }}
+                   <strong>{{ t('info') }}：</strong>{{ t('tips') }}
                </p>
            </div>
 
