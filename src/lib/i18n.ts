@@ -92,7 +92,8 @@ export const zhCN = {
   'back_home': '返回首页',
   'api_docs': 'API文档',
   'imprint': '备案信息',
-  'privacy_policy': '隐私政策'
+  'privacy_policy': '隐私政策',
+  'tips': '如果你不曾看懂这个页面所表达的内容，那么请你点击"分享日志"按钮，将链接复制粘贴给可以帮助你的人。'
 };
 
 /**
@@ -189,7 +190,7 @@ export const zhTW = {
   'back_home': '返回首頁',
   'api_docs': 'API文件',
   'imprint': '備案資訊',
-  'privacy_policy': '隱私權政策'
+  'tips': '如果你不曾看懂這個頁面所表達的內容，那麼請你點擊"分享記錄"按鈕，將鏈接複製粘貼給可以幫助你的人。'
 };
 
 /**
@@ -202,7 +203,17 @@ export const detectSystemLanguage = (): 'zh-CN' | 'zh-TW' => {
     return preferredLang as 'zh-CN' | 'zh-TW';
   }
 
-  return 'zh-TW';
+  const systemLang = navigator.language || (navigator as any).userLanguage;
+
+  if (systemLang && (
+    systemLang.startsWith('zh-HK') ||  // 香港繁体
+    systemLang.startsWith('zh-MO') ||  // 澳门繁体
+    systemLang.startsWith('zh-TW') ||  // 台湾繁体
+    systemLang === 'zh-Hant'           // 繁体中文
+  )) {
+    return 'zh-TW';
+  }
+  return 'zh-CN';
 };
 
 /**
