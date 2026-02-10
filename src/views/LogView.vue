@@ -199,16 +199,8 @@ const copyShareMessage = async () => {
 
   let shareMessage = '我遇到了一个问题，';
 
-  if (log.value && log.value.analysis && log.value.analysis.information) {
-    const softwareInfo = log.value.analysis.information.find((info: any) =>
-      info.label.toLowerCase().includes('software') ||
-      info.label.toLowerCase().includes('version') ||
-      info.label.toLowerCase().includes('server')
-    );
-
-    if (softwareInfo) {
-      shareMessage += `是${softwareInfo.label.replace(':', '')} ${softwareInfo.value} `;
-    }
+  if (log.value && log.value.title) {
+    shareMessage += `是${log.value.title} `;
   }
 
   shareMessage += '的，链接如下：\n\n';
