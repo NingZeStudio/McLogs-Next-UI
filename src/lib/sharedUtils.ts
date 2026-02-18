@@ -1,8 +1,8 @@
 // Shared utilities for both ApiDocsView and LogView components
 
 // Common constants
-export const API_BASE_URL = 'https://api.mclogs.lemwood.icu'
-export const FRONTEND_BASE_URL = 'https://mclogs.lemwood.icu'
+export const API_BASE_URL = 'https://api.logshare.cn/'
+export const FRONTEND_BASE_URL = 'https://logshare.cn/'
 
 // Common API endpoints
 export const API_ENDPOINTS = {

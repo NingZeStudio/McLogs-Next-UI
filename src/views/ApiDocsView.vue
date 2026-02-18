@@ -13,7 +13,7 @@ const setTab = (tab: string) => {
     <div class="container mx-auto px-4 py-12 max-w-4xl">
         <h1 class="text-3xl font-bold mb-6">{{ t('api_docs') }}</h1>
         <p class="mb-8 text-muted-foreground">
-            {{ t('home_subtitle') }} <strong>NingZeLogs</strong> {{ t('integration_text') }}
+            {{ t('home_subtitle') }} <strong>LogShare.CN</strong> {{ t('integration_text') }}
         </p>
 
         <div class="space-y-16">
@@ -25,7 +25,7 @@ const setTab = (tab: string) => {
                 </div>
                 
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/log
+                    https://api.logshare.cn/1/log
                 </div>
 
                 <div class="space-y-4">
@@ -73,7 +73,7 @@ const setTab = (tab: string) => {
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">const</span> content = <span class="text-green-400">"Your log content here..."</span>;
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/log'</span>, {
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/log'</span>, {
     method: <span class="text-green-400">'POST'</span>,
     body: <span class="text-cyan-400">new</span> <span class="text-yellow-400">URLSearchParams</span>({ content })
 });
@@ -86,7 +86,7 @@ const setTab = (tab: string) => {
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">&lt;?php</span>
 <span class="text-pink-400">$content</span> = <span class="text-green-400">"Your log content here..."</span>;
-<span class="text-pink-400">$ch</span> = <span class="text-yellow-400">curl_init</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/log'</span>);
+<span class="text-pink-400">$ch</span> = <span class="text-yellow-400">curl_init</span>(<span class="text-green-400">'https://api.logshare.cn/1/log'</span>);
 <span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="text-cyan-400">true</span>);
 <span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_POSTFIELDS, <span class="text-yellow-400">http_build_query</span>([<span class="text-green-400">'content'</span> => <span class="text-pink-400">$content</span>]));
 <span class="text-pink-400">$response</span> = <span class="text-yellow-400">curl_exec</span>(<span class="text-pink-400">$ch</span>);
@@ -98,7 +98,7 @@ const setTab = (tab: string) => {
                     <!-- cURL Example -->
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.mclogs.lemwood.icu/1/log'</pre>
+curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.logshare.cn/1/log'</pre>
                     </div>
                 </div>
 
@@ -108,8 +108,8 @@ curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.mclogs.l
                         <pre class="bg-muted p-3 rounded-md text-xs border border-border overflow-x-auto whitespace-pre">{
     "success": true,
     "id": "8FlTowW",
-    "url": "https://mclogs.lemwood.icu/8FlTowW",
-    "raw": "https://api.mclogs.lemwood.icu/1/raw/8FlTowW"
+    "url": "https://logshare.cn/8FlTowW",
+    "raw": "https://api.logshare.cn/1/raw/8FlTowW"
 }</pre>
                     </div>
                     <div class="space-y-2">
@@ -129,7 +129,7 @@ curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.mclogs.l
                     <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold">POST</span>
                 </div>
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/analyse
+                    https://api.logshare.cn/1/analyse
                 </div>
                 <p class="text-sm text-muted-foreground">{{ t('instant_analysis_desc') }}</p>
                 <div class="space-y-2">
@@ -145,7 +145,7 @@ curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.mclogs.l
                     <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
                 </div>
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/insights/[id]
+                    https://api.logshare.cn/1/insights/[id]
                 </div>
                 <p class="text-sm text-muted-foreground">{{ t('get_insights_desc') }}</p>
 
@@ -160,19 +160,19 @@ curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.mclogs.l
                     </div>
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/insights/8FlTowW'</span>);
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/insights/8FlTowW'</span>);
 <span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
 <span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
                     </div>
                     <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/insights/8FlTowW'</span>), <span class="text-cyan-400">true</span>);
+<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/insights/8FlTowW'</span>), <span class="text-cyan-400">true</span>);
 <span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
                     </div>
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.mclogs.lemwood.icu/1/insights/8FlTowW</pre>
+curl https://api.logshare.cn/1/insights/8FlTowW</pre>
                     </div>
                 </div>
 
@@ -202,7 +202,7 @@ curl https://api.mclogs.lemwood.icu/1/insights/8FlTowW</pre>
                     <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
                 </div>
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/raw/[id]
+                    https://api.logshare.cn/1/raw/[id]
                 </div>
                 <p class="text-sm text-muted-foreground">{{ t('get_raw_log_desc') }}</p>
 
@@ -217,17 +217,17 @@ curl https://api.mclogs.lemwood.icu/1/insights/8FlTowW</pre>
                     </div>
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/raw/8FlTowW'</span>);
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/raw/8FlTowW'</span>);
 <span class="text-cyan-400">const</span> text = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">text</span>();
 <span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(text);</pre>
                     </div>
                     <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">echo</span> <span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/raw/8FlTowW'</span>);</pre>
+<span class="text-cyan-400">echo</span> <span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/raw/8FlTowW'</span>);</pre>
                     </div>
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.mclogs.lemwood.icu/1/raw/8FlTowW</pre>
+curl https://api.logshare.cn/1/raw/8FlTowW</pre>
                     </div>
                 </div>
             </section>
@@ -239,7 +239,7 @@ curl https://api.mclogs.lemwood.icu/1/raw/8FlTowW</pre>
                     <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
                 </div>
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/ai-analysis/[id]
+                    https://api.logshare.cn/1/ai-analysis/[id]
                 </div>
                 <p class="text-sm text-muted-foreground">{{ t('ai_analysis_desc') }}</p>
 
@@ -254,19 +254,19 @@ curl https://api.mclogs.lemwood.icu/1/raw/8FlTowW</pre>
                     </div>
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW'</span>);
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/ai-analysis/8FlTowW'</span>);
 <span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
 <span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
                     </div>
                     <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW'</span>), <span class="text-cyan-400">true</span>);
+<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/ai-analysis/8FlTowW'</span>), <span class="text-cyan-400">true</span>);
 <span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
                     </div>
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW</pre>
+curl https://api.logshare.cn/1/ai-analysis/8FlTowW</pre>
                     </div>
                 </div>
 
@@ -286,7 +286,7 @@ curl https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW</pre>
                     <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
                 </div>
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/limits
+                    https://api.logshare.cn/1/limits
                 </div>
                 <p class="text-sm text-muted-foreground">{{ t('get_limits_desc') }}</p>
 
@@ -301,19 +301,19 @@ curl https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW</pre>
                     </div>
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/limits'</span>);
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/limits'</span>);
 <span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
 <span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
                     </div>
                     <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/limits'</span>), <span class="text-cyan-400">true</span>);
+<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/limits'</span>), <span class="text-cyan-400">true</span>);
 <span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
                     </div>
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.mclogs.lemwood.icu/1/limits</pre>
+curl https://api.logshare.cn/1/limits</pre>
                     </div>
                 </div>
 
@@ -335,7 +335,7 @@ curl https://api.mclogs.lemwood.icu/1/limits</pre>
                 </div>
 
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/delete/[id]
+                    https://api.logshare.cn/1/delete/[id]
                 </div>
 
                 <p class="text-sm text-muted-foreground">删除指定 ID 的日志文件。此操作不可逆，请谨慎使用。</p>
@@ -385,7 +385,7 @@ curl https://api.mclogs.lemwood.icu/1/limits</pre>
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">const</span> logId = <span class="text-green-400">"8FlTowW"</span>;
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">`https://api.mclogs.lemwood.icu/1/delete/<span class="text-yellow-400">${logId}</span>`</span>, {
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">`https://api.logshare.cn/1/delete/<span class="text-yellow-400">${logId}</span>`</span>, {
     method: <span class="text-green-400">'DELETE'</span>,
     headers: {
         'Content-Type': 'application/json'
@@ -400,7 +400,7 @@ curl https://api.mclogs.lemwood.icu/1/limits</pre>
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">&lt;?php</span>
 <span class="text-pink-400">$logId</span> = <span class="text-green-400">"8FlTowW"</span>;
-<span class="text-pink-400">$ch</span> = <span class="text-yellow-400">curl_init</span>(<span class="text-green-400">"https://api.mclogs.lemwood.icu/1/delete/<span class="text-pink-400">$logId</span>"</span>);
+<span class="text-pink-400">$ch</span> = <span class="text-yellow-400">curl_init</span>(<span class="text-green-400">"https://api.logshare.cn/1/delete/<span class="text-pink-400">$logId</span>"</span>);
 <span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_CUSTOMREQUEST, <span class="text-green-400">"DELETE"</span>);
 <span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="text-cyan-400">true</span>);
 <span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_HTTPHEADER, [
@@ -415,7 +415,7 @@ curl https://api.mclogs.lemwood.icu/1/limits</pre>
                     <!-- cURL Example -->
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl -X DELETE -H "Content-Type: application/json" 'https://api.mclogs.lemwood.icu/1/delete/8FlTowW'</pre>
+curl -X DELETE -H "Content-Type: application/json" 'https://api.logshare.cn/1/delete/8FlTowW'</pre>
                     </div>
                 </div>
 
@@ -444,7 +444,7 @@ curl -X DELETE -H "Content-Type: application/json" 'https://api.mclogs.lemwood.i
                     <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
                 </div>
                 <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.mclogs.lemwood.icu/1/errors/rate
+                    https://api.logshare.cn/1/errors/rate
                 </div>
                 <p class="text-sm text-muted-foreground">返回标准的 429 Too Many Requests 错误响应。这主要用于测试或前端显示标准错误消息。</p>
 
@@ -459,19 +459,19 @@ curl -X DELETE -H "Content-Type: application/json" 'https://api.mclogs.lemwood.i
                     </div>
                     <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/errors/rate'</span>);
+<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/errors/rate'</span>);
 <span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
 <span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
                     </div>
                     <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
 <span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.mclogs.lemwood.icu/1/errors/rate'</span>), <span class="text-cyan-400">true</span>);
+<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/errors/rate'</span>), <span class="text-cyan-400">true</span>);
 <span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
                     </div>
                     <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
                         <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.mclogs.lemwood.icu/1/errors/rate</pre>
+curl https://api.logshare.cn/1/errors/rate</pre>
                     </div>
                 </div>
 

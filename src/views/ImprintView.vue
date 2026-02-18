@@ -4,10 +4,9 @@ const imprintContent = {
   title: "法律聲明 (Imprint)",
   serviceProvider: {
     heading: "服務提供方",
-    description: "本服務 (NingZeLogs) 由以下團隊聯合提供：",
+    description: "本服務 (LogShare.CN) 由以下團隊聯合提供：",
     providers: [
-      { name: "ZeinkLab", url: "zeinklab.com" },
-      { name: "Lemwood", url: "lemwood.cn" }
+      { name: "NingZeStudio", url: "https://github.com/NingZeStudio" }
     ]
   },
   contact: {

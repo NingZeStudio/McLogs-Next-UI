@@ -4,12 +4,12 @@
 
 // 定义页面标题模板
 export const pageTitleTemplates = {
-  home: '首页 - NingZeLogs Next',
-  log: (title?: string, id?: string) => `${title || id || '日志'} - NingZeLogs Next`,
-  apiDocs: 'API文档 - NingZeLogs Next',
-  imprint: '法律声明 - NingZeLogs Next',
-  privacy: '隐私政策 - NingZeLogs Next',
-  notFound: '页面未找到 - NingZeLogs Next'
+  home: '首页 - LogShare.CN',
+  log: (title?: string, id?: string) => `${title || id || '日志'} - LogShare.CN`,
+  apiDocs: 'API文档 - LogShare.CN',
+  imprint: '法律声明 - LogShare.CN',
+  privacy: '隐私政策 - LogShare.CN',
+  notFound: '页面未找到 - LogShare.CN'
 };
 
 /**
@@ -30,7 +30,7 @@ export const setPageTitle = (template: keyof typeof pageTitleTemplates | string,
   } else if (typeof template === 'string') {
     title = template;
   } else {
-    title = 'NingZeLogs Next';
+    title = 'LogShare.CN';
   }
   
   document.title = title;

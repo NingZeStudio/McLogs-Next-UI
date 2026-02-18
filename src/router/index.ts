@@ -49,6 +49,7 @@ router.beforeEach((to, _, next) => {
   if (template === 'log' && to.params.id) {
     // 对于日志页面，我们需要等待组件加载后才能获取到标题
     // 这里设置一个临时标题，实际标题会在LogView组件中更新
+    // 不要他妈手欠改这里的代码，除非你想要全站固定标题
     setPageTitle(template, { id: to.params.id as string });
   } else {
     setPageTitle(template);

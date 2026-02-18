@@ -5,7 +5,7 @@ const privacyContent = {
   lastUpdated: "最後更新日期：2026年1月23日",
   overview: {
     heading: "概述",
-    text: "我們非常重視您的隱私保護。本隱私權政策旨在說明 NingZeLogs 如何收集、使用和保護您的個人資料。使用本服務即表示您同意本政策中所述的資料收集和使用方式。"
+    text: "我們非常重視您的隱私保護。本隱私權政策旨在說明 LogShare.CN 如何收集、使用和保護您的個人資料。使用本服務即表示您同意本政策中所述的資料收集和使用方式。"
   },
   collectedInfo: {
     heading: "我們收集的資訊",

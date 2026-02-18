@@ -103,7 +103,7 @@ const save = async () => {
     <div class="fixed inset-0 -z-10 h-full w-full bg-white bg-[linear-gradient(to_right,#f0f0f0_1px,transparent_1px),linear-gradient(to_bottom,#f0f0f0_1px,transparent_1px)] bg-[size:6rem_4rem]"></div>
     <div class="text-center space-y-4 relative">
       <h1 class="text-4xl font-extrabold tracking-tight lg:text-5xl bg-gradient-to-r from-primary to-primary/80 bg-clip-text text-transparent">
-      NingZeLogs
+      LogShare.CN
       </h1>
       <p class="text-xl text-muted-foreground">
         {{ t('home_subtitle') }}

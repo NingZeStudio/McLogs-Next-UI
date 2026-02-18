@@ -1,5 +1,5 @@
 import axios from 'axios'
-const baseURL = 'https://api.mclogs.lemwood.icu'
+const baseURL = 'https://api.logshare.cn'
 
 export const apiClient = axios.create({
   baseURL: baseURL

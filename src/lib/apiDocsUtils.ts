@@ -20,7 +20,7 @@ export const apiEndpoints = [
     id: 'log',
     title: 'paste_log',
     method: 'POST',
-    url: 'https://api.mclogs.lemwood.icu/1/log',
+    url: 'https://api.logshare.cn//1/log',
     description: 'home_subtitle',
     params: [
       {
@@ -33,7 +33,7 @@ export const apiEndpoints = [
       success: true,
       id: "8FlTowW",
       url: "https://mclogs.lemwood.icu/8FlTowW",
-      raw: "https://api.mclogs.lemwood.icu/1/raw/8FlTowW"
+      raw: "https://api.logshare.cn//1/raw/8FlTowW"
     },
     errorResponse: {
       success: false,
@@ -44,7 +44,7 @@ export const apiEndpoints = [
     id: 'analyse',
     title: 'instant_analysis',
     method: 'POST',
-    url: 'https://api.mclogs.lemwood.icu/1/analyse',
+    url: 'https://api.logshare.cn//1/analyse',
     description: 'instant_analysis_desc',
     params: []
   },
@@ -52,35 +52,35 @@ export const apiEndpoints = [
     id: 'insights',
     title: 'get_insights',
     method: 'GET',
-    url: 'https://api.mclogs.lemwood.icu/1/insights/[id]',
+    url: 'https://api.logshare.cn//1/insights/[id]',
     description: 'get_insights_desc'
   },
   {
     id: 'raw',
     title: 'get_raw_log',
     method: 'GET',
-    url: 'https://api.mclogs.lemwood.icu/1/raw/[id]',
+    url: 'https://api.logshare.cn//1/raw/[id]',
     description: 'get_raw_log_desc'
   },
   {
     id: 'ai-analysis',
     title: 'ai_analysis',
     method: 'GET',
-    url: 'https://api.mclogs.lemwood.icu/1/ai-analysis/[id]',
+    url: 'https://api.logshare.cn//1/ai-analysis/[id]',
     description: 'ai_analysis_desc'
   },
   {
     id: 'limits',
     title: 'get_limits',
     method: 'GET',
-    url: 'https://api.mclogs.lemwood.icu/1/limits',
+    url: 'https://api.logshare.cn//1/limits',
     description: 'get_limits_desc'
   },
   {
     id: 'delete',
     title: '删除日志文件',
     method: 'DELETE',
-    url: 'https://api.mclogs.lemwood.icu/1/delete/[id]',
+    url: 'https://api.logshare.cn//1/delete/[id]',
     description: '删除指定 ID 的日志文件。此操作不可逆，请谨慎使用。',
     params: [
       {
@@ -94,7 +94,7 @@ export const apiEndpoints = [
     id: 'rate-error',
     title: '速率限制错误信息',
     method: 'GET',
-    url: 'https://api.mclogs.lemwood.icu/1/errors/rate',
+    url: 'https://api.logshare.cn//1/errors/rate',
     description: '返回标准的 429 Too Many Requests 错误响应。这主要用于测试或前端显示标准错误消息。'
   }
 ]
@@ -103,26 +103,26 @@ export const apiEndpoints = [
 export const apiCodeExamples = {
   js: {
     log: `const content = "Your log content here...";
-const response = await fetch('https://api.mclogs.lemwood.icu/1/log', {
+const response = await fetch('https://api.logshare.cn//1/log', {
     method: 'POST',
     body: new URLSearchParams({ content })
 });
 const data = await response.json();
 console.log(data);`,
-    insights: `const response = await fetch('https://api.mclogs.lemwood.icu/1/insights/8FlTowW');
+    insights: `const response = await fetch('https://api.logshare.cn//1/insights/8FlTowW');
 const data = await response.json();
 console.log(data);`,
-    raw: `const response = await fetch('https://api.mclogs.lemwood.icu/1/raw/8FlTowW');
+    raw: `const response = await fetch('https://api.logshare.cn//1/raw/8FlTowW');
 const text = await response.text();
 console.log(text);`,
-    'ai-analysis': `const response = await fetch('https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW');
+    'ai-analysis': `const response = await fetch('https://api.logshare.cn//1/ai-analysis/8FlTowW');
 const data = await response.json();
 console.log(data);`,
-    limits: `const response = await fetch('https://api.mclogs.lemwood.icu/1/limits');
+    limits: `const response = await fetch('https://api.logshare.cn//1/limits');
 const data = await response.json();
 console.log(data);`,
     delete: `const logId = "8FlTowW";
-const response = await fetch(\`https://api.mclogs.lemwood.icu/1/delete/\${logId}\`, {
+const response = await fetch(\`https://api.logshare.cn//1/delete/\${logId}\`, {
     method: 'DELETE',
     headers: {
         'Content-Type': 'application/json'
@@ -130,14 +130,14 @@ const response = await fetch(\`https://api.mclogs.lemwood.icu/1/delete/\${logId}
 });
 const data = await response.json();
 console.log(data);`,
-    'rate-error': `const response = await fetch('https://api.mclogs.lemwood.icu/1/errors/rate');
+    'rate-error': `const response = await fetch('https://api.logshare.cn//1/errors/rate');
 const data = await response.json();
 console.log(data);`
   },
   php: {
     log: `<?php
 \$content = "Your log content here...";
-\$ch = curl_init('https://api.mclogs.lemwood.icu/1/log');
+\$ch = curl_init('https://api.logshare.cn//1/log');
 curl_setopt(\$ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt(\$ch, CURLOPT_POSTFIELDS, http_build_query(['content' => \$content]));
 \$response = curl_exec(\$ch);
@@ -145,19 +145,19 @@ curl_setopt(\$ch, CURLOPT_POSTFIELDS, http_build_query(['content' => \$content])
 curl_close(\$ch);
 print_r(\$data);`,
     insights: `<?php
-\$data = json_decode(file_get_contents('https://api.mclogs.lemwood.icu/1/insights/8FlTowW'), true);
+\$data = json_decode(file_get_contents('https://api.logshare.cn//1/insights/8FlTowW'), true);
 print_r(\$data);`,
     raw: `<?php
-echo file_get_contents('https://api.mclogs.lemwood.icu/1/raw/8FlTowW');`,
+echo file_get_contents('https://api.logshare.cn//1/raw/8FlTowW');`,
     'ai-analysis': `<?php
-\$data = json_decode(file_get_contents('https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW'), true);
+\$data = json_decode(file_get_contents('https://api.logshare.cn//1/ai-analysis/8FlTowW'), true);
 print_r(\$data);`,
     limits: `<?php
-\$data = json_decode(file_get_contents('https://api.mclogs.lemwood.icu/1/limits'), true);
+\$data = json_decode(file_get_contents('https://api.logshare.cn//1/limits'), true);
 print_r(\$data);`,
     delete: `<?php
 \$logId = "8FlTowW";
-\$ch = curl_init("https://api.mclogs.lemwood.icu/1/delete/\$logId");
+\$ch = curl_init("https://api.logshare.cn//1/delete/\$logId");
 curl_setopt(\$ch, CURLOPT_CUSTOMREQUEST, "DELETE");
 curl_setopt(\$ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt(\$ch, CURLOPT_HTTPHEADER, [
@@ -168,16 +168,16 @@ curl_setopt(\$ch, CURLOPT_HTTPHEADER, [
 curl_close(\$ch);
 print_r(\$data);`,
     'rate-error': `<?php
-\$data = json_decode(file_get_contents('https://api.mclogs.lemwood.icu/1/errors/rate'), true);
+\$data = json_decode(file_get_contents('https://api.logshare.cn//1/errors/rate'), true);
 print_r(\$data);`
   },
   curl: {
-    log: `curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.mclogs.lemwood.icu/1/log'`,
-    insights: `curl https://api.mclogs.lemwood.icu/1/insights/8FlTowW`,
-    raw: `curl https://api.mclogs.lemwood.icu/1/raw/8FlTowW`,
-    'ai-analysis': `curl https://api.mclogs.lemwood.icu/1/ai-analysis/8FlTowW`,
-    limits: `curl https://api.mclogs.lemwood.icu/1/limits`,
-    delete: `curl -X DELETE -H "Content-Type: application/json" 'https://api.mclogs.lemwood.icu/1/delete/8FlTowW'`,
-    'rate-error': `curl https://api.mclogs.lemwood.icu/1/errors/rate`
+    log: `curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.logshare.cn//1/log'`,
+    insights: `curl https://api.logshare.cn//1/insights/8FlTowW`,
+    raw: `curl https://api.logshare.cn//1/raw/8FlTowW`,
+    'ai-analysis': `curl https://api.logshare.cn//1/ai-analysis/8FlTowW`,
+    limits: `curl https://api.logshare.cn//1/limits`,
+    delete: `curl -X DELETE -H "Content-Type: application/json" 'https://api.logshare.cn//1/delete/8FlTowW'`,
+    'rate-error': `curl https://api.logshare.cn//1/errors/rate`
   }
 }

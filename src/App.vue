@@ -79,7 +79,7 @@ onMounted(() => {
     <header class="border-b bg-card sticky top-0 z-40 w-full backdrop-blur">
       <div class="container mx-auto px-4 h-16 flex items-center justify-between">
         <RouterLink to="/" class="flex items-center gap-2 font-bold text-xl">
-          <span class="text-primary">NingZeLogs</span><sup class="text-xs text-muted-foreground">ᴺᵉˣᵀ</sup>
+          <span class="text-primary">LogShare.CN</span><sup class="text-xs text-muted-foreground">ᴺᵉˣᵀ</sup>
         </RouterLink>
         <nav class="flex items-center gap-4">
           <RouterLink to="/api-docs" class="text-sm font-bold bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">API 文档</RouterLink>
@@ -98,13 +98,13 @@ onMounted(() => {
 
     <footer class="border-t py-6 bg-muted/20">
       <div class="container mx-auto px-4 text-center text-sm text-muted-foreground">
-        &copy; 2026 NingZeLogs - <a href="https://beian.miit.gov.cn/" target="_blank">新ICP备2024015133号-5</a><br/>
+        &copy; 2026 LogShare.CN - 柠泽工作室旗舰级项目<br/>
         <div class="mt-2 space-x-4">
           <RouterLink to="/imprint" class="hover:underline">法律声明</RouterLink>
           <RouterLink to="/privacy" class="hover:underline">隐私政策</RouterLink>
         </div>
         <div class="mt-2">
-          - Powered by ZeinkLab ＆ Lemwood -
+          - Powered by Github/NingZeStudio -
         </div>
       </div>
     </footer>
