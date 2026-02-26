@@ -4,7 +4,7 @@ import { apiClient } from '@/lib/api'
 import { useRouter } from 'vue-router'
 import { t } from '@/lib/i18n'
 import { parseArchive, isArchiveFile, isTextFile, type ExtractedFile } from '@/lib/archiveParser'
-import { Archive, FileText, X, CheckCircle, AlertCircle, Loader2, Copy, Link } from 'lucide-vue-next'
+import { Archive, FileText, X, CheckCircle, AlertCircle, Loader2, Copy, Link, BookText } from 'lucide-vue-next'
 
 const content = ref('')
 const loading = ref(false)
@@ -275,7 +275,7 @@ const copyAllLinks = async () => {
 </script>
 
 <template>
-  <div class="min-h-screen flex flex-col relative overflow-hidden">
+  <div class="flex flex-col relative overflow-hidden">
     <!-- 动态网格背景 -->
     <div class="fixed inset-0 -z-10 bg-gradient-to-br from-background via-background to-primary/5">
       <!-- 网格层 -->
@@ -283,27 +283,27 @@ const copyAllLinks = async () => {
     </div>
 
     <!-- 标题 Banner -->
-    <div class="relative pt-16 pb-8 px-4">
-      <div class="container mx-auto text-center space-y-4">
-        <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-card/50 border border-primary/20 text-primary text-sm font-medium mb-4 backdrop-blur-xl shadow-sm">
-          <span class="relative flex h-2 w-2">
-            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
-            <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
-          </span>
-          专业级 Minecraft 日志分析工具
+    <div class="pt-16 pb-4 px-4">
+      <div class="container mx-auto text-center space-y-6">
+        <!-- Logo 装饰背景 -->
+        <div class="relative inline-block">
+          <div class="absolute inset-0 bg-primary/20 blur-3xl rounded-full opacity-50"></div>
+          <h1 class="relative text-5xl md:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent drop-shadow-2xl">
+            LogShare.CN
+            <sup class="text-2xl md:text-3xl font-bold text-primary/60">NEXT</sup>
+          </h1>
         </div>
-        <h1 class="text-5xl md:text-6xl lg:text-7xl font-black tracking-tight bg-gradient-to-r from-primary via-primary/80 to-primary/60 bg-clip-text text-transparent drop-shadow-2xl">
-          LogShare.CN
-          <sup class="text-2xl md:text-3xl font-bold text-primary/60">NEXT</sup>
-        </h1>
-        <p class="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto font-light leading-relaxed">
-          {{ t('home_subtitle') }}
-        </p>
+        <!-- 装饰性分隔线 -->
+        <div class="flex items-center justify-center gap-4">
+          <div class="h-px w-16 bg-gradient-to-r from-transparent to-primary/50"></div>
+          <div class="w-2 h-2 rounded-full bg-primary/80"></div>
+          <div class="h-px w-16 bg-gradient-to-l from-transparent to-primary/50"></div>
+        </div>
       </div>
     </div>
 
     <!-- 主内容区 -->
-    <div class="flex-1 container mx-auto px-4 pb-12 flex flex-col items-center gap-8 relative">
+    <div class="container mx-auto px-4 pb-4 flex flex-col items-center gap-4 relative">
       <!-- Main Paste Area with Mac-style window -->
       <div
         class="w-full max-w-4xl overflow-hidden flex flex-col relative group"
@@ -472,18 +472,23 @@ const copyAllLinks = async () => {
         <div v-else class="relative flex-1">
           <textarea
             v-model="content"
-            class="w-full h-[500px] p-4 bg-[#1a1a1a] dark:bg-gray-900 text-gray-100 dark:text-gray-100 font-mono text-sm resize-none focus:outline-none"
+            class="w-full h-[50vh] sm:h-[450px] md:h-[550px] p-4 bg-[#1a1a1a] dark:bg-gray-900 text-gray-100 dark:text-gray-100 font-mono text-sm resize-none focus:outline-none"
             :placeholder="t('paste_here')"
           ></textarea>
 
           <!-- 居中提示文字 -->
-          <div 
-            v-if="!content" 
+          <div
+            v-if="!content"
             class="absolute inset-0 flex items-center justify-center pointer-events-none"
           >
             <div class="text-center text-gray-500 dark:text-gray-400">
               <p class="text-lg font-medium">将文件拖动至此上传日志文件</p>
               <p class="text-sm mt-1">支持 .zip 压缩包和日志文本文件</p>
+              <div class="flex items-center justify-center gap-6 mt-6">
+                <Archive class="h-16 w-16 opacity-60" />
+                <FileText class="h-16 w-16 opacity-60" />
+                <BookText class="h-16 w-16 opacity-60" />
+              </div>
             </div>
           </div>
 

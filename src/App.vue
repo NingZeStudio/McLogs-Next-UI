@@ -99,16 +99,14 @@ onMounted(() => {
       </RouterView>
     </main>
 
-    <footer class="border-t py-6 bg-muted/20">
-      <div class="container mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-muted-foreground">
-        <div class="text-center md:text-left">
-          &copy; 2026 LogShare.CN - 柠泽工作室旗舰级项目
+    <footer class="border-t py-4 bg-muted/20">
+      <div class="container mx-auto px-4 flex flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
+        <div class="text-left">
+          &copy; 2026 LogShare.CN
         </div>
-        <div class="flex items-center gap-6">
+        <div class="flex items-center gap-3">
           <RouterLink to="/imprint" class="hover:underline transition-colors">法律声明</RouterLink>
           <RouterLink to="/privacy" class="hover:underline transition-colors">隐私政策</RouterLink>
-          <span class="hidden md:inline">-</span>
-          <span class="hidden md:inline">Powered by Github/NingZeStudio</span>
         </div>
       </div>
     </footer>
