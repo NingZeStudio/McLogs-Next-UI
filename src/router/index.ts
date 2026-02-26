@@ -4,6 +4,7 @@ import LogView from '../views/LogView.vue'
 import ApiDocsView from '../views/ApiDocsView.vue'
 import ImprintView from '../views/ImprintView.vue'
 import PrivacyPolicyView from '../views/PrivacyPolicyView.vue'
+import NotFoundView from '../views/NotFoundView.vue'
 import { setPageTitle, getCurrentPageTemplate } from '@/lib/pageTitle'
 
 const router = createRouter({
@@ -38,6 +39,12 @@ const router = createRouter({
       name: 'log',
       component: LogView,
       meta: { title: 'log' }
+    },
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'not-found',
+      component: NotFoundView,
+      meta: { title: '404' }
     }
   ]
 })

@@ -20,9 +20,10 @@
 | CSS 框架 | Tailwind CSS | 3.4.17 |
 | UI 组件 | Radix-Vue | 1.9.17 |
 | 图标库 | Lucide Vue Next | 0.562.0 |
-| 路由 | Vue Router | 4.6.4 (Hash 模式) |
+| 路由 | Vue Router | 4.6.4 (History 模式) |
 | HTTP 客户端 | Axios | 1.13.2 |
 | Markdown 渲染 | markdown-it | 14.1.0 |
+| 压缩包处理 | JSZip | 3.10.1 |
 
 ## 项目结构
 
@@ -40,6 +41,7 @@ McLogs-Next-UI/
 │   ├── lib/               # 工具库
 │   │   ├── api.ts         # API 客户端配置 (baseURL: https://api.logshare.cn)
 │   │   ├── apiDocsUtils.ts # API 文档工具函数
+│   │   ├── archiveParser.ts # 压缩包解析工具
 │   │   ├── i18n.ts        # 国际化配置 (zh-CN / zh-TW)
 │   │   ├── localStorage.ts # 本地存储工具
 │   │   ├── logParser.ts   # 日志解析工具
@@ -47,7 +49,7 @@ McLogs-Next-UI/
 │   │   ├── pageTitle.ts   # 页面标题管理
 │   │   └── sharedUtils.ts # 共享工具函数
 │   ├── router/
-│   │   └── index.ts       # 路由配置 (Hash 模式)
+│   │   └── index.ts       # 路由配置 (History 模式)
 │   ├── views/             # 页面组件
 │   │   ├── HomeView.vue        # 首页 - 日志上传/粘贴
 │   │   ├── LogView.vue         # 日志详情页 - 日志展示与分析
@@ -160,6 +162,16 @@ location / {
 - 支持深色模式：`darkMode: 'class'`
 - 使用 CSS 变量定义颜色系统（border, background, primary, secondary 等）
 - 启用 `@tailwindcss/typography` 插件用于 Markdown 渲染
+- 圆角变量定义在 `src/style.css` 中：
+  ```css
+  --radius-sm: 0.375rem;    /* 3px */
+  --radius-md: 0.5rem;      /* 4px */
+  --radius-lg: 0.75rem;     /* 6px */
+  --radius-xl: 1rem;        /* 8px */
+  --radius-2xl: 1.5rem;     /* 12px */
+  --radius-3xl: 2rem;       /* 16px */
+  --radius-full: 9999px;    /* 圆形 */
+  ```
 
 ### 代码分割策略
 
@@ -197,6 +209,7 @@ t('home_title') // 返回对应语言的翻译
 | `theme` | 主题偏好：`'light'` 或 `'dark'` |
 | `preferred_language` | 语言偏好：`'zh-CN'` 或 `'zh-TW'` |
 | `cookie_consent` | Cookie 同意状态：`'true'` |
+| `ai_analysis_history` | AI 分析历史记录 |
 
 ## 新增功能：压缩包批量上传
 
@@ -264,3 +277,5 @@ getApiUrl('/endpoint')
 2. **API 地址**: 开发环境使用 `api.mclogs.lemwood.icu`，生产环境使用 `api.logshare.cn`
 3. **深色模式**: 通过 `document.documentElement.classList.add('dark')` 切换
 4. **代码分割**: 修改 `vite.config.ts` 的 `manualChunks` 时需保持 chunk 大小合理
+5. **圆角样式**: 所有圆角通过 CSS 变量控制，修改 `src/style.css` 中的 `--radius-*` 变量可统一调整圆角大小
+6. **History 模式**: 使用 `createWebHistory`，部署时必须配置服务器伪静态规则
