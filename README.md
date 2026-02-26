@@ -110,11 +110,11 @@ Markdown 渲染	Markdown-it	AI 分析结果渲染
 server: {
   proxy: {
     '/api': {
-      target: 'https://api.mclogs.lemwood.icu',
+      target: 'https://api.logshare.cn',
       changeOrigin: true,
       rewrite: (path) => path.replace(/^\/api/, ''),
       headers: {
-          'Host': 'api.mclogs.lemwood.icu'
+          'Host': 'api.logshare.cn'
       }
     }
   }
