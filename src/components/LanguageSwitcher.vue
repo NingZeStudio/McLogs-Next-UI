@@ -7,23 +7,29 @@
         <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path>
       </svg>
     </button>
-    
-    <div v-if="showMenu" class="language-menu" ref="menuRef">
-      <div 
-        class="language-option" 
-        :class="{ active: currentLang === 'zh-CN' }"
-        @click="switchLanguage('zh-CN')"
-      >
-        简体中文
+
+    <Transition name="menu-fade" appear>
+      <div v-if="showMenu" class="language-menu" ref="menuRef">
+        <TransitionGroup name="list">
+          <div
+            key="zh-CN"
+            class="language-option"
+            :class="{ active: currentLang === 'zh-CN' }"
+            @click="switchLanguage('zh-CN')"
+          >
+            简体中文
+          </div>
+          <div
+            key="zh-TW"
+            class="language-option"
+            :class="{ active: currentLang === 'zh-TW' }"
+            @click="switchLanguage('zh-TW')"
+          >
+            繁體中文
+          </div>
+        </TransitionGroup>
       </div>
-      <div 
-        class="language-option" 
-        :class="{ active: currentLang === 'zh-TW' }"
-        @click="switchLanguage('zh-TW')"
-      >
-        繁體中文
-      </div>
-    </div>
+    </Transition>
   </div>
 </template>
 
@@ -144,5 +150,37 @@ onUnmounted(() => {
 .dark .language-option.active {
   background-color: #3b82f6;
   color: white;
+}
+
+/* 菜单淡入淡出动画 */
+.menu-fade-enter-active,
+.menu-fade-leave-active {
+  transition: all 0.2s ease;
+}
+
+.menu-fade-enter-from,
+.menu-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* 列表项动画 */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.3s ease;
+}
+
+.list-enter-from {
+  opacity: 0;
+  transform: translateX(-10px);
+}
+
+.list-leave-to {
+  opacity: 0;
+  transform: translateX(10px);
+}
+
+.list-move {
+  transition: transform 0.3s ease;
 }
 </style>

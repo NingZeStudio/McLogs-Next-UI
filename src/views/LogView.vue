@@ -9,7 +9,7 @@ import {
 } from '@/lib/localStorage'
 import { setPageTitle } from '@/lib/pageTitle'
 import { t } from '@/lib/i18n'
-import { WrapText, ArrowDownToLine, Brain, History, Sparkles, X } from 'lucide-vue-next'
+import { WrapText, ArrowDownToLine, Brain, History, Sparkles, X, Search } from 'lucide-vue-next'
 
 const md = new MarkdownIt({
     html: false,
@@ -619,19 +619,14 @@ const scrollToFooter = () => {
           <div class="flex items-center gap-2">
             <!-- Search functionality in header -->
             <div class="relative flex items-center">
+              <Search class="h-4 w-4 text-gray-400 absolute left-2 pointer-events-none" />
               <input
                   type="text"
                   v-model="searchTerm"
                   @keyup="handleSearchInput"
                   :placeholder="t('search') + '...'"
-                  class="bg-gray-700 dark:bg-gray-600 text-white dark:text-white text-sm rounded px-3 py-1 w-24 sm:w-32 md:w-40 focus:outline-none focus:ring-1 focus:ring-primary transition-colors duration-300"
-              >
-              <button @click="performSearch" class="ml-1 text-gray-300 dark:text-gray-200 hover:text-white transition-colors duration-300">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <path d="m21 21-4.3-4.3"></path>
-                </svg>
-              </button>
+                  class="bg-gray-700 dark:bg-gray-600 text-white dark:text-white text-sm rounded-md pl-8 pr-3 py-1 w-24 sm:w-32 md:w-40 focus:outline-none focus:ring-1 focus:ring-primary transition-colors duration-300"
+              />
 
               <div v-if="searchResults.length > 0" class="ml-2 text-xs text-gray-400 dark:text-gray-300 transition-colors duration-300">
                 {{ searchIndex + 1 }}/{{ searchResults.length }} {{ t('results') }}
