@@ -32,22 +32,22 @@ onUnmounted(() => {
     <Transition name="slide-up">
       <div
         v-if="showUpdateToast"
-        class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 flex items-center gap-3 bg-card border border-border rounded-lg shadow-2xl px-4 py-3 animate-in fade-in slide-in-from-bottom-4"
+        class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100vw-2rem)] sm:w-auto max-w-sm flex items-center gap-3 bg-card border border-border rounded-lg shadow-2xl px-4 py-3 animate-in fade-in slide-in-from-bottom-4"
       >
         <div class="flex items-center gap-3">
-          <RefreshCw class="h-5 w-5 text-primary animate-spin-slow" />
+          <RefreshCw class="h-5 w-5 text-primary animate-spin-slow flex-shrink-0" />
           <span class="text-sm font-medium">{{ updateMessage }}</span>
         </div>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 flex-shrink-0">
           <button
             @click="refreshPage"
-            class="text-xs bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-1.5 rounded-md transition-colors font-medium"
+            class="text-xs bg-primary text-primary-foreground hover:bg-primary/90 px-3 py-1.5 rounded-md transition-colors font-medium whitespace-nowrap"
           >
             立即刷新
           </button>
           <button
             @click="closeToast"
-            class="p-1 hover:bg-muted rounded transition-colors"
+            class="p-1 hover:bg-muted rounded transition-colors flex-shrink-0"
             aria-label="关闭"
           >
             <X class="h-4 w-4 text-muted-foreground" />

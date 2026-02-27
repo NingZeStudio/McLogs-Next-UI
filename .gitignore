@@ -21,3 +21,4 @@ dist
 *.sln
 *.sw?
 package-lock.json
+QWEN.md

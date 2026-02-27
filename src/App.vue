@@ -5,6 +5,7 @@ import { X, Palette } from 'lucide-vue-next'
 import LanguageSwitcher from '@/components/LanguageSwitcher.vue'
 import ThemeSettings from '@/components/ThemeSettings.vue'
 import PwaUpdateToast from '@/components/PwaUpdateToast.vue'
+import PwaInstallPrompt from '@/components/PwaInstallPrompt.vue'
 import { setPageTitle, getCurrentPageTemplate } from '@/lib/pageTitle'
 
 const showEasterEgg = ref(false)
@@ -26,14 +27,16 @@ const closeEasterEgg = () => {
 }
 
 const acceptCookies = () => {
-  localStorage.setItem('cookie_consent', 'true')
   showCookieConsent.value = false
 }
 
 onMounted(() => {
-  if (!localStorage.getItem('cookie_consent')) {
-    showCookieConsent.value = true
-  }
+  showCookieConsent.value = true
+
+  // 2 秒后自动关闭
+  setTimeout(() => {
+    showCookieConsent.value = false
+  }, 2000)
 
   const route = useRoute();
   const template = getCurrentPageTemplate(route.name?.toString());
@@ -89,9 +92,18 @@ onMounted(() => {
     </main>
 
     <footer class="border-t py-4 bg-muted/20">
-      <div class="container mx-auto px-4 flex flex-row items-center justify-between gap-4 text-xs text-muted-foreground">
-        <div class="text-left">
-          &copy; 2026 LogShare.CN ＆ Pwa
+      <div class="container mx-auto px-4 flex flex-col items-center gap-3 text-xs text-muted-foreground">
+        <div class="flex flex-wrap items-center justify-center gap-3">
+          <span>&copy; 2026 LogShare.CN</span>
+          <span class="hidden sm:inline">|</span>
+          <a
+            href="https://qm.qq.com/q/XoXSt8askA"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:text-primary transition-colors"
+          >
+            加入群聊【梦泽闲聊小窝】
+          </a>
         </div>
         <div class="flex items-center gap-3">
           <RouterLink to="/imprint" class="hover:underline transition-colors">法律声明</RouterLink>
@@ -100,20 +112,23 @@ onMounted(() => {
       </div>
     </footer>
 
-    <!-- Cookie Consent Banner -->
-    <div v-if="showCookieConsent" class="fixed bottom-0 left-0 right-0 z-40 p-4 bg-background/80 backdrop-blur-md border-t border-border shadow-lg">
-      <div class="container mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-        <div class="text-sm text-muted-foreground text-center md:text-left">
-          <p>
-            我们使用 Cookie 来提升您的体验。继续浏览即表示您同意我们使用 Cookie。
+    <!-- Cookie Consent Notification -->
+    <div v-if="showCookieConsent" class="fixed top-4 right-4 z-50 w-[calc(100vw-2rem)] sm:w-auto max-w-sm bg-card border border-border rounded-lg shadow-2xl px-3 py-2 animate-in fade-in slide-in-from-top-4">
+      <div class="flex items-start gap-2">
+        <div class="flex-1 min-w-0">
+          <p class="text-xs font-medium">Cookie 使用提示</p>
+          <p class="text-xs text-muted-foreground mt-0.5">
+            我们使用 Cookie 来提升您的体验。
             <RouterLink to="/privacy" class="underline hover:text-primary transition-colors">了解更多</RouterLink>
           </p>
         </div>
-        <div class="flex gap-2">
-           <button @click="acceptCookies" class="bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2 rounded-md text-sm font-medium transition-colors">
-             接受
-           </button>
-        </div>
+        <button
+          @click="acceptCookies"
+          class="p-0.5 hover:bg-muted rounded transition-colors flex-shrink-0"
+          aria-label="关闭"
+        >
+          <X class="h-3.5 w-3.5 text-muted-foreground" />
+        </button>
       </div>
     </div>
 
@@ -140,6 +155,9 @@ onMounted(() => {
 
     <!-- PWA Update Toast -->
     <PwaUpdateToast />
+
+    <!-- PWA Install Prompt -->
+    <PwaInstallPrompt />
   </div>
 </template>
 
