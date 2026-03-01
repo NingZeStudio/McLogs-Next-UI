@@ -554,17 +554,15 @@ const scrollToFooter = () => {
         </div>
 
         <div :class="isFullscreen ? 'flex-1 flex flex-col' : ''">
-          <div :class="isFullscreen ? 'flex-1 overflow-auto' : 'overflow-x-auto'" class="bg-[#0f0f0f] border border-gray-600 rounded-b-lg">
+          <div :class="isFullscreen ? 'flex-1 overflow-auto' : 'overflow-x-auto'" class="bg-[#2a2a2a] border border-gray-600 rounded-b-lg relative">
             <div
               class="log-content font-mono text-xs p-4 text-gray-100"
               :class="{ 'show-errors-only': showErrorsOnly, 'log-wrap': wrapLines, 'log-no-wrap': !wrapLines }"
               v-html="logContent"
             ></div>
-          </div>
-          <div class="flex justify-end p-2 border-t border-gray-600 bg-[#1a1a1a]">
             <button
               @click="scrollToTop"
-              class="inline-flex items-center gap-1.5 text-xs bg-[#2d2d2d] hover:bg-[#3a3a3a] text-gray-100 px-3 py-1.5 rounded-md transition-colors"
+              class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 text-xs bg-[#3d3d3d] hover:bg-[#4a4a4a] text-gray-100 px-3 py-1.5 rounded-md transition-colors shadow-lg"
             >
               <ArrowUp class="h-3.5 w-3.5" />
               {{ t('scroll_top') }}
