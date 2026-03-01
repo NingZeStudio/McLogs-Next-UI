@@ -15,7 +15,6 @@
             </div>
 
             <div class="space-y-6">
-              <!-- 主题色选择 -->
               <div class="space-y-3">
                 <h4 class="text-sm font-medium text-muted-foreground">主题色</h4>
                 <div class="grid grid-cols-3 gap-3">
@@ -35,7 +34,6 @@
                 </div>
               </div>
 
-              <!-- 显示模式 -->
               <div class="space-y-3">
                 <h4 class="text-sm font-medium text-muted-foreground">显示模式</h4>
                 <div class="flex gap-2">
@@ -63,7 +61,6 @@
                 </div>
               </div>
 
-              <!-- 重置按钮 -->
               <div class="pt-4 border-t">
                 <button
                   @click="resetSettings"
@@ -97,7 +94,7 @@ const close = () => {
   emit('update:open', false)
 }
 
-const currentTheme = ref('ink')
+const currentTheme = ref('ocean')
 const displayMode = ref<'light' | 'dark' | 'system'>('system')
 
 const themes = [
@@ -122,29 +119,64 @@ const setDisplayMode = (mode: 'light' | 'dark' | 'system') => {
 }
 
 const resetSettings = () => {
-  currentTheme.value = 'ink'
+  currentTheme.value = 'ocean'
   displayMode.value = 'system'
 
   localStorage.removeItem('theme_color')
   localStorage.removeItem('display_mode')
 
-  applyTheme('ink')
+  applyTheme('ocean')
   applyDisplayMode('system')
 }
 
 const applyTheme = (themeId: string) => {
-  const themeColors: Record<string, { primary: string; accent: string }> = {
-    ink: { primary: '0 0% 20%', accent: '0 0% 90%' },
-    ocean: { primary: '204 94% 38%', accent: '199 89% 48%' },
-    lavender: { primary: '260 60% 65%', accent: '270 50% 80%' },
-    forest: { primary: '142 76% 36%', accent: '150 60% 40%' },
-    sunset: { primary: '14 90% 53%', accent: '30 90% 60%' },
-    sakura: { primary: '330 80% 70%', accent: '340 70% 85%' }
+  const isDark = document.documentElement.classList.contains('dark')
+  
+  const themeColors: Record<string, { primary: string; accent: string; primaryDark?: string; accentDark?: string }> = {
+    ink: { 
+      primary: '0 0% 20%', 
+      accent: '0 0% 90%',
+      primaryDark: '0 0% 80%',
+      accentDark: '0 0% 25%'
+    },
+    ocean: { 
+      primary: '204 94% 38%', 
+      accent: '199 89% 48%',
+      primaryDark: '204 94% 50%',
+      accentDark: '199 89% 60%'
+    },
+    lavender: { 
+      primary: '260 60% 65%', 
+      accent: '270 50% 80%',
+      primaryDark: '260 60% 75%',
+      accentDark: '270 50% 85%'
+    },
+    forest: { 
+      primary: '142 76% 36%', 
+      accent: '150 60% 40%',
+      primaryDark: '142 76% 50%',
+      accentDark: '150 60% 55%'
+    },
+    sunset: { 
+      primary: '14 90% 53%', 
+      accent: '30 90% 60%',
+      primaryDark: '14 90% 65%',
+      accentDark: '30 90% 70%'
+    },
+    sakura: { 
+      primary: '330 80% 70%', 
+      accent: '340 70% 85%',
+      primaryDark: '330 80% 80%',
+      accentDark: '340 70% 90%'
+    }
   }
 
-  const colors = themeColors[themeId] || themeColors.ink
-  document.documentElement.style.setProperty('--primary', colors!.primary)
-  document.documentElement.style.setProperty('--accent', colors!.accent)
+  const colors = themeColors[themeId] || themeColors.ocean
+  const primary = isDark && colors!.primaryDark ? colors!.primaryDark : colors!.primary
+  const accent = isDark && colors!.accentDark ? colors!.accentDark : colors!.accent
+  
+  document.documentElement.style.setProperty('--primary', primary)
+  document.documentElement.style.setProperty('--accent', accent)
 }
 
 const applyDisplayMode = (mode: 'light' | 'dark' | 'system') => {
@@ -155,6 +187,9 @@ const applyDisplayMode = (mode: 'light' | 'dark' | 'system') => {
   } else {
     document.documentElement.classList.remove('dark')
   }
+
+  const savedTheme = localStorage.getItem('theme_color') || 'ocean'
+  applyTheme(savedTheme)
 }
 
 onMounted(() => {

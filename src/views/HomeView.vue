@@ -411,7 +411,7 @@ const copyAllLinks = async () => {
           <div v-else class="relative">
             <textarea
               v-model="content"
-              class="w-full h-[50vh] sm:h-[400px] md:h-[500px] p-4 bg-background dark:bg-[#0f0f0f] text-foreground dark:text-gray-100 font-mono text-sm resize-none focus:outline-none"
+              class="w-full h-[50vh] sm:h-[400px] md:h-[500px] p-4 bg-background text-foreground font-mono text-sm resize-none focus:outline-none"
               :placeholder="t('paste_here')"
             ></textarea>
 
@@ -419,14 +419,14 @@ const copyAllLinks = async () => {
               v-if="!content"
               class="absolute inset-0 flex items-center justify-center pointer-events-none"
             >
-              <div class="text-center text-muted-foreground dark:text-gray-400">
+              <div class="text-center text-muted-foreground">
                 <div class="flex items-center justify-center gap-4 mb-4">
                   <Archive class="h-12 w-12 opacity-50" />
                   <FileText class="h-12 w-12 opacity-50" />
                   <BookText class="h-12 w-12 opacity-50" />
                 </div>
                 <p class="text-sm">拖拽文件到此处上传，或直接粘贴日志内容</p>
-                <p class="text-xs mt-1 text-muted-foreground dark:text-gray-500">支持 .zip 压缩包和 .txt/.log 等文本文件</p>
+                <p class="text-xs mt-1 text-muted-foreground">支持 .zip 压缩包和 .txt/.log 等文本文件</p>
               </div>
             </div>
 

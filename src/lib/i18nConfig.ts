@@ -41,10 +41,6 @@ export const zhCN = {
   'view_log': '查看日志',
   'problems_detected': '检测到的问题',
   'server_info': '服务器信息',
-  'ai_analysis': '大模型智能分析',
-  'start_analysis': '开始智能分析',
-  'analysis_loading': '正在分析日志...',
-  'analysis_disclaimer': '内容由 AI 生成，本站不对 AI 生成的内容负责',
   'show_errors_only': '只看错误',
   'show_all': '显示全部',
   'scroll_top': '顶部',
@@ -86,7 +82,6 @@ export const zhCN = {
   'params_required_field': '相同 (必需字段:',
   'get_insights_desc': '获取日志的分析结果，包括服务器版本、安装的插件/模组以及检测到的问题。',
   'get_raw_log_desc': '获取日志文件的原始内容 (text/plain)。',
-  'ai_analysis_desc': '使用大语言模型（Gemini）对日志进行深度分析，识别根本原因并提供建议。此接口会处理日志中的错误片段并返回 Markdown 格式的分析报告。',
   'get_limits_desc': '获取当前服务器配置的日志存储限制参数。',
 
   'log_not_found': '日志未找到或网络错误',
@@ -98,7 +93,19 @@ export const zhCN = {
   'api_docs': 'API 文档',
   'imprint': '备案信息',
   'privacy_policy': '隐私政策',
-  'tips': '如果你不曾看懂这个页面所表达的内容，那么请你点击"分享日志"按钮，将链接复制粘贴给可以帮助你的人。谢谢你的配合。'
+  'tips': '如果你不曾看懂这个页面所表达的内容，那么请你点击"分享日志"按钮，将链接复制粘贴给可以帮助你的人。谢谢你的配合。',
+
+  // 公告相关
+  'close': '关闭',
+  'announcement_title': '最新公告',
+  'announcement_qq_group_title': '官方 QQ 群开放',
+  'announcement_qq_group_desc': '欢迎加入我们的官方 QQ 交流群，与其他用户交流经验，获取最新技术支持和更新资讯。',
+  'announcement_join_qq_group': '加入官方 QQ 群',
+  'announcement_ai_upgrade_title': 'AI 大模型智能分析升级维护',
+  'announcement_ai_upgrade_desc': 'AI 大模型智能分析功能暂时下架进行升级维护，我们将更换更强大的模型并准备专项资金以提供更好的服务。',
+  'announcement_ai_upgrade_reason_1': '更换更强大的 AI 模型，提升分析准确度',
+  'announcement_ai_upgrade_reason_2': '准备专项资金，确保服务稳定运行',
+  'announcement_footer': '感谢您的理解与支持！'
 };
 
 /**
@@ -139,10 +146,6 @@ export const zhTW = {
   'view_log': '檢視記錄',
   'problems_detected': '偵測到的問題',
   'server_info': '伺服器資訊',
-  'ai_analysis': '大模型智慧分析',
-  'start_analysis': '開始智慧分析',
-  'analysis_loading': '正在分析記錄...',
-  'analysis_disclaimer': '內容由 AI 產生，本站不對 AI 產生的內容負責',
   'show_errors_only': '僅顯示錯誤',
   'show_all': '顯示全部',
   'scroll_top': '頂部',
@@ -184,7 +187,6 @@ export const zhTW = {
   'params_required_field': '相同 (必需欄位:',
   'get_insights_desc': '取得記錄的分析結果，包含伺服器版本、安裝的外掛/模組以及偵測到的問題。',
   'get_raw_log_desc': '取得記錄檔案的原始內容 (text/plain)。',
-  'ai_analysis_desc': '使用大型語言模型（Gemini）對記錄進行深度分析，識別根本原因並提供建議。此介面會處理記錄中的錯誤片段並回傳 Markdown 格式的分析報告。',
   'get_limits_desc': '取得目前伺服器設定的記錄儲存限制參數。',
 
   'log_not_found': '記錄未找到或網路錯誤',
@@ -195,7 +197,19 @@ export const zhTW = {
   'back_home': '返回首頁',
   'api_docs': 'API 文件',
   'imprint': '備案資訊',
-  'tips': '如果你不曾看懂這個頁面所表達的內容，那麼請你點擊"分享記錄"按鈕，將鏈接複製粘貼給可以幫助你的人。謝謝你的配合。'
+  'tips': '如果你不曾看懂這個頁面所表達的內容，那麼請你點擊"分享記錄"按鈕，將鏈接複製粘貼給可以幫助你的人。謝謝你的配合。',
+
+  // 公告相關
+  'close': '關閉',
+  'announcement_title': '最新公告',
+  'announcement_qq_group_title': '官方 QQ 群開放',
+  'announcement_qq_group_desc': '歡迎加入我們的官方 QQ 交流群，與其他用戶交流經驗，獲取最新技術支援和更新資訊。',
+  'announcement_join_qq_group': '加入官方 QQ 群',
+  'announcement_ai_upgrade_title': 'AI 大模型智能分析升級維護',
+  'announcement_ai_upgrade_desc': 'AI 大模型智能分析功能暫時下架進行升級維護，我們將更換更強大的模型並準備專項資金以提供更好的服務。',
+  'announcement_ai_upgrade_reason_1': '更換更強大的 AI 模型，提升分析準確度',
+  'announcement_ai_upgrade_reason_2': '準備專項資金，確保服務穩定運行',
+  'announcement_footer': '感謝您的理解與支援！'
 };
 
 // 导出所有语言包

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// 固定使用繁體中文（台灣）
 const privacyContent = {
   title: "隱私政策",
   lastUpdated: "最後更新日期：2026年1月23日",

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-// 固定使用繁體中文（台灣）
 const imprintContent = {
   title: "法律聲明 (Imprint)",
   serviceProvider: {

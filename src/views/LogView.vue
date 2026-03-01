@@ -1,19 +1,14 @@
 <script setup lang="ts">
-import { onMounted, ref, computed } from 'vue'
+import { onMounted, ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { apiClient } from '@/lib/ApiClient'
 import { parseLog } from '@/lib/logParser'
-import MarkdownIt from 'markdown-it'
-import { saveAIAnalysisRecord } from '@/lib/localStorage'
 import { setPageTitle } from '@/lib/pageTitle'
 import { t } from '@/lib/i18n'
 import '@/assets/LogsAnalysis.css'
 import {
   WrapText,
   ArrowDownToLine,
-  Brain,
-  History,
-  Sparkles,
   Search,
   Download,
   Trash2,
@@ -24,13 +19,10 @@ import {
   ChevronRight,
   Check,
   AlertTriangle,
-  Info,
   Server,
   ArrowUp,
   Code
 } from 'lucide-vue-next'
-
-const md = new MarkdownIt({ html: false, linkify: true })
 
 const route = useRoute()
 const id = route.params.id as string
@@ -39,79 +31,12 @@ const logContent = ref('')
 const loading = ref(true)
 const error = ref('')
 const showErrorsOnly = ref(false)
-const wrapLines = ref(false)
-const analyzing = ref(false)
-const aiResult = ref('')
+const wrapLines = ref(true)
 const searchTerm = ref('')
 const searchIndex = ref(0)
 const searchResults = ref<number[]>([])
 const isFullscreen = ref(false)
 const isCopySuccess = ref(false)
-let cachedAllRecords: any[] | null = null
-
-const showHistory = ref(false)
-const aiAnalysisHistory = ref<any[]>([])
-
-const formattedAiResult = computed(() => {
-  if (!aiResult.value) return ''
-  if (aiResult.value.startsWith('Error') || aiResult.value.startsWith('Analysis failed')) {
-    return `<div class="text-destructive">${aiResult.value}</div>`
-  }
-  if (aiResult.value.length > 50000) {
-    return `<div class="text-destructive">分析结果过长，已截断。请直接查看原始日志。</div>`
-  }
-  try {
-    return md.render(aiResult.value)
-  } catch (e) {
-    console.error('Markdown 渲染失败:', e)
-    return `<div class="text-destructive">渲染分析结果时发生错误：${(e as Error).message}</div>`
-  }
-})
-
-const analyzeLog = async () => {
-  analyzing.value = true
-  aiResult.value = ''
-  try {
-    const { data } = await apiClient.get(`/1/ai-analysis/${id}`)
-    if (data.success) {
-      aiResult.value = data.analysis
-      saveAIAnalysisRecord(id, data.analysis)
-      cachedAllRecords = null
-    } else {
-      aiResult.value = t('analysis_failed') + ': ' + (data.analysis || t('unknown_error'))
-    }
-  } catch (e: any) {
-    console.error(e)
-    const msg = e.response?.data?.analysis || e.response?.data?.error || e.message || t('unknown_error')
-    aiResult.value = t('analysis_failed') + ': ' + msg
-  } finally {
-    analyzing.value = false
-  }
-}
-
-const loadAIAnalysisHistory = () => {
-  if (cachedAllRecords === null) {
-    try {
-      cachedAllRecords = JSON.parse(localStorage.getItem('ai_analysis_history') || '[]')
-    } catch (e) {
-      console.error('解析 AI 分析历史记录失败:', e)
-      cachedAllRecords = []
-    }
-  }
-  aiAnalysisHistory.value = cachedAllRecords ? cachedAllRecords.filter((r: any) => r.logId === id) : []
-}
-
-const toggleHistory = () => {
-  showHistory.value = !showHistory.value
-  if (showHistory.value) {
-    loadAIAnalysisHistory()
-  }
-}
-
-const useHistoricalAnalysis = (analysis: string) => {
-  aiResult.value = analysis
-  showHistory.value = false
-}
 
 onMounted(async () => {
   try {
@@ -343,7 +268,7 @@ const scrollToFooter = () => {
           <div class="grid grid-cols-4 gap-1.5 mb-3">
             <button
               @click="downloadLog"
-              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap bg-secondary hover:bg-secondary/80 text-secondary-foreground px-2 py-2 rounded-md transition-colors"
+              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap bg-secondary hover:bg-secondary/80 text-secondary-foreground rounded-md transition-colors py-2.5"
             >
               <Download class="h-3.5 w-3.5 flex-shrink-0" />
               <span class="text-[13px]">下载</span>
@@ -351,7 +276,7 @@ const scrollToFooter = () => {
             <button
               @click="toggleErrors"
               :class="showErrorsOnly ? 'bg-destructive text-destructive-foreground' : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'"
-              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap px-2 py-2 rounded-md transition-colors"
+              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap rounded-md transition-colors py-2.5"
             >
               <AlertTriangle class="h-3.5 w-3.5 flex-shrink-0" />
               <span class="text-[13px]">{{ showErrorsOnly ? '全部' : '错误' }}</span>
@@ -359,14 +284,14 @@ const scrollToFooter = () => {
             <button
               @click="copyShareMessage"
               :class="isCopySuccess ? 'bg-green-600 hover:bg-green-700 text-white' : 'bg-primary hover:bg-primary/90 text-background'"
-              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap px-2 py-2 rounded-md transition-colors"
+              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap rounded-md transition-colors py-2.5"
             >
               <Share2 class="h-3.5 w-3.5 flex-shrink-0" />
               <span class="text-[13px]">{{ isCopySuccess ? '已复制' : '分享' }}</span>
             </button>
             <button
               @click="deleteLog"
-              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap bg-destructive hover:bg-destructive/90 text-destructive-foreground px-2 py-2 rounded-md transition-colors"
+              class="flex items-center justify-center gap-1 text-xs whitespace-nowrap bg-destructive hover:bg-destructive/90 text-destructive-foreground rounded-md transition-colors py-2.5"
             >
               <Trash2 class="h-3.5 w-3.5 flex-shrink-0" />
               <span class="text-[13px]">删除</span>
@@ -378,7 +303,7 @@ const scrollToFooter = () => {
               <button
                 @click="wrapLines = !wrapLines"
                 :class="wrapLines ? 'bg-primary text-primary-foreground' : 'bg-secondary text-secondary-foreground'"
-                class="inline-flex items-center gap-1.5 text-xs px-2.5 py-1.5 rounded-md transition-colors"
+                class="inline-flex items-center gap-1.5 text-xs px-3 py-2 rounded-md transition-colors"
               >
                 <WrapText class="h-3.5 w-3.5" />
                 自动换行
@@ -387,7 +312,7 @@ const scrollToFooter = () => {
                 :href="`https://api.logshare.cn/1/raw/${id}`"
                 target="_blank"
                 rel="noopener noreferrer"
-                class="inline-flex items-center gap-1.5 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-2.5 py-1.5 rounded-md transition-colors"
+                class="inline-flex items-center gap-1.5 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-3 py-2 rounded-md transition-colors"
               >
                 <Code class="h-3.5 w-3.5" />
                 原始日志
@@ -395,7 +320,7 @@ const scrollToFooter = () => {
             </div>
             <button
               @click="scrollToFooter"
-              class="inline-flex items-center gap-1 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-2 py-1.5 rounded-md transition-colors"
+              class="inline-flex items-center gap-1 text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-3 py-2 rounded-md transition-colors"
             >
               <ArrowDownToLine class="h-3.5 w-3.5" />
               {{ t('scroll_footer') }}
@@ -404,7 +329,6 @@ const scrollToFooter = () => {
 
           <div class="mt-3 p-3 rounded-md border border-amber-500/50 bg-amber-50 dark:bg-amber-950/30">
             <p class="text-sm text-amber-800 dark:text-amber-200 font-medium">
-              <Info class="h-4 w-4 inline mr-1.5 -mt-0.5" />
               {{ t('tips') }}
             </p>
           </div>
@@ -440,64 +364,6 @@ const scrollToFooter = () => {
           </div>
         </div>
 
-        <div class="rounded-lg border bg-gradient-to-br from-indigo-50 to-purple-50 dark:from-indigo-950/30 dark:to-purple-950/30 border-primary/30 p-4">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-semibold flex items-center gap-2">
-              <Brain class="h-4 w-4 text-primary" />
-              {{ t('ai_analysis') }}
-            </h3>
-            <button
-              @click="toggleHistory"
-              class="text-xs bg-secondary hover:bg-secondary/80 text-secondary-foreground px-2 py-1 rounded-md transition-colors inline-flex items-center gap-1"
-            >
-              <History class="h-3 w-3" />
-              历史
-            </button>
-          </div>
-
-          <div v-if="showHistory" class="mb-3 p-3 rounded-md border bg-secondary/30">
-            <div class="flex justify-between items-center mb-2">
-              <h4 class="font-medium text-xs">历史分析记录</h4>
-              <button @click="showHistory = false" class="text-xs text-muted-foreground hover:text-foreground">
-                <X class="h-3 w-3" />
-              </button>
-            </div>
-            <div v-if="aiAnalysisHistory.length === 0" class="text-xs text-muted-foreground italic py-2">
-              暂无历史记录
-            </div>
-            <div v-else class="space-y-1.5 max-h-32 overflow-y-auto">
-              <div
-                v-for="(record, index) in aiAnalysisHistory"
-                :key="index"
-                class="p-2 rounded-md border bg-background text-xs cursor-pointer hover:bg-secondary/50 transition-colors"
-                @click="useHistoricalAnalysis(record.analysis)"
-              >
-                {{ new Date(record.timestamp).toLocaleString() }}
-              </div>
-            </div>
-          </div>
-
-          <div v-if="!aiResult && !analyzing">
-            <button
-              @click="analyzeLog"
-              class="w-full bg-primary text-primary-foreground hover:bg-primary/90 px-4 py-2.5 rounded-md font-medium shadow transition-all inline-flex items-center justify-center gap-2"
-            >
-              <Sparkles class="h-4 w-4" />
-              {{ t('start_analysis') }}
-            </button>
-          </div>
-          <div v-else-if="analyzing" class="text-center py-4">
-            <div class="animate-spin rounded-full h-6 w-6 border-b-2 border-primary mx-auto"></div>
-            <p class="text-sm text-muted-foreground mt-2">{{ t('analysis_loading') }}</p>
-          </div>
-          <div
-            v-else
-            class="text-sm bg-secondary/50 rounded-md border p-3 overflow-x-auto max-h-64 overflow-y-auto"
-          >
-            <div class="prose prose-sm dark:prose-invert max-w-none break-words" v-html="formattedAiResult"></div>
-          </div>
-        </div>
-
         <div v-if="log.analysis?.information?.length > 0" class="rounded-lg border bg-card p-4">
           <h3 class="font-semibold mb-3 flex items-center gap-2">
             <Server class="h-4 w-4" />
@@ -513,16 +379,12 @@ const scrollToFooter = () => {
               <span class="font-medium text-right break-all max-w-[50%]">{{ info.value }}</span>
             </div>
           </div>
-                  <div class="rounded-md border bg-muted/50 p-3 text-xs text-muted-foreground">
-          <Info class="h-3.5 w-3.5 inline mr-1" />
-          {{ t('analysis_disclaimer') }}
-        </div>
         </div>
 
 
       </div>
 
-      <div :class="isFullscreen ? 'flex-1' : 'w-full lg:flex-1 lg:max-w-none'">
+      <div :class="isFullscreen ? 'flex-1 flex flex-col min-h-0' : 'w-full lg:flex-1 lg:max-w-none'">
         <div class="rounded-t-lg bg-[#2d2d2d] px-4 py-2.5 flex items-center justify-between border-b border-gray-600">
           <div class="flex items-center gap-2">
             <div class="flex gap-1.5">
@@ -569,8 +431,8 @@ const scrollToFooter = () => {
           </div>
         </div>
 
-        <div :class="isFullscreen ? 'flex-1 flex flex-col' : ''">
-          <div :class="isFullscreen ? 'flex-1 overflow-auto' : 'overflow-x-auto'" class="bg-[#2a2a2a] border border-gray-600 rounded-b-lg relative">
+        <div :class="isFullscreen ? 'flex-1 flex flex-col min-h-0' : ''">
+          <div :class="[isFullscreen ? 'flex-1 overflow-y-auto' : 'overflow-x-auto', isFullscreen ? '' : 'rounded-b-lg']" class="bg-[#2a2a2a] border border-gray-600 relative">
             <div
               class="log-content font-mono text-xs p-4 text-gray-100"
               :class="{ 'show-errors-only': showErrorsOnly, 'log-wrap': wrapLines, 'log-no-wrap': !wrapLines }"
@@ -578,7 +440,7 @@ const scrollToFooter = () => {
             ></div>
             <button
               @click="scrollToTop"
-              class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 text-xs bg-[#3d3d3d] hover:bg-[#4a4a4a] text-gray-100 px-3 py-1.5 rounded-md transition-colors shadow-lg"
+              class="absolute bottom-3 right-3 inline-flex items-center gap-1.5 text-xs bg-[#3d3d3d] hover:bg-[#4a4a4a] text-gray-100 px-4 py-2 rounded-md transition-colors shadow-lg"
             >
               <ArrowUp class="h-3.5 w-3.5" />
               {{ t('scroll_top') }}

@@ -26,8 +26,7 @@ const dismissPrompt = () => {
 const handleBeforeInstallPrompt = (event: Event) => {
   event.preventDefault()
   deferredPrompt = event
-  
-  // 如果用户之前没有关闭过提示，则显示
+
   if (!localStorage.getItem('pwa_install_dismissed')) {
     showInstallPrompt.value = true
   }
