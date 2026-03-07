@@ -431,7 +431,7 @@ const scrollToFooter = () => {
         <div :class="isFullscreen ? 'flex-1 flex flex-col min-h-0' : ''">
           <div :class="[isFullscreen ? 'flex-1 overflow-y-auto' : 'overflow-x-auto', isFullscreen ? '' : 'rounded-b-lg']" class="bg-[#2a2a2a] border border-gray-600 relative">
             <div
-              class="log-content font-mono text-xs p-4 text-gray-100"
+              class="log-content font-mono text-xs text-gray-100"
               :class="{ 'show-errors-only': showErrorsOnly, 'log-wrap': wrapLines, 'log-no-wrap': !wrapLines }"
               v-html="logContent"
             ></div>
@@ -453,11 +453,19 @@ const scrollToFooter = () => {
 .log-content table {
   width: 100%;
   border-collapse: collapse;
+  table-layout: fixed;
 }
 
-.log-content .line-number-container {
-  width: 1%;
-  white-space: nowrap;
+.log-content .line-num {
+  vertical-align: top;
+  text-align: right;
+  width: 40px;
+}
+
+.log-content .line-content {
+  padding: 0;
+  margin: 0;
+  word-break: break-all;
 }
 
 .log-content.show-errors-only .entry-no-error {
@@ -477,24 +485,21 @@ const scrollToFooter = () => {
   white-space: pre !important;
 }
 
-.log-content .entry[data-level="error"],
-.log-content .entry[data-level="critical"],
-.log-content .entry[data-level="emergency"] {
-  background-color: rgba(239, 68, 68, 0.2) !important;
+/* 连续错误/警告行背景 - 使用统一背景 */
+.log-content tr.bg-error-group {
+  background-color: rgba(239, 68, 68, 0.12) !important;
 }
 
-.log-content .entry[data-level="warning"] {
-  background-color: rgba(245, 158, 11, 0.2) !important;
+.log-content tr.bg-warning-group {
+  background-color: rgba(245, 158, 11, 0.12) !important;
 }
 
-.dark .log-content .entry[data-level="error"],
-.dark .log-content .entry[data-level="critical"],
-.dark .log-content .entry[data-level="emergency"] {
-  background-color: rgba(239, 68, 68, 0.3) !important;
+.dark .log-content tr.bg-error-group {
+  background-color: rgba(239, 68, 68, 0.18) !important;
 }
 
-.dark .log-content .entry[data-level="warning"] {
-  background-color: rgba(245, 158, 11, 0.3) !important;
+.dark .log-content tr.bg-warning-group {
+  background-color: rgba(245, 158, 11, 0.18) !important;
 }
 
 mark {

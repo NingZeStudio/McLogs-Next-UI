@@ -7,23 +7,23 @@
 export function parseLog(raw: string, showLineNumbers: boolean = true): string {
   const lines = raw.split('\n')
 
+  // 获取行的级别
+  function getLevel(line: string): string {
+    if (line.match(/(\/|: |\[)WARN(ING)?(\]|:| )/i)) return 'warning'
+    if (line.match(/(\/|: |\[)(ERR(OR)?|FATAL|SEVERE)(\]|:| )/i)) return 'error'
+    if (line.match(/(\/|: |\[)(DEBUG)(\]|:| )/i)) return 'debug'
+    if (/\b[A-Za-z0-9_$]*(?:Exception|Error|Throwable)\b/.test(line)) return 'error'
+    if (/^\s*at\s+/.test(line)) return 'error'
+    if (/^Caused by:\s*/.test(line)) return 'error'
+    return 'info'
+  }
+
   if (!showLineNumbers) {
     let html = '<div class="log-simple">'
     lines.forEach((line, index) => {
       if (lines.length === index + 1 && line === '') return
 
-      let level = 'info'
-      // 检测错误级别：WARN/ERROR/FATAL/SEVERE 等关键字
-      if (line.match(/(\/|: |\[)WARN(ING)?(\]|:| )/i)) level = 'warning'
-      else if (line.match(/(\/|: |\[)(ERR(OR)?|FATAL|SEVERE)(\]|:| )/i)) level = 'error'
-      else if (line.match(/(\/|: |\[)(DEBUG)(\]|:| )/i)) level = 'debug'
-      // Java 堆栈错误：Exception/Error/Throwable 类名
-      else if (/\b[A-Za-z0-9_$]*(?:Exception|Error|Throwable)\b/.test(line)) level = 'error'
-      // Java 堆栈行：以 "at " 开头的行（包括缩进）
-      else if (/^\s*at\s+/.test(line)) level = 'error'
-      // "Caused by:" 行
-      else if (/^Caused by:\s*/.test(line)) level = 'error'
-
+      const level = getLevel(line)
       const entryClass = level === 'error' ? 'entry-error' : 'entry-no-error'
       const levelClass = `level-${level}`
       let formatted = formatContent(line)
@@ -34,36 +34,78 @@ export function parseLog(raw: string, showLineNumbers: boolean = true): string {
     return html
   }
 
-  let html = '<table class="log-table">'
+  // 构建带连续背景分组的表格
+  let html = '<table class="log-table"><tbody>'
+  let currentGroup: { start: number; level: string; lines: string[] } | null = null
+  const groups: Array<{ start: number; level: string; lines: string[] }> = []
 
-  lines.forEach((line, index) => {
-    if (lines.length === index + 1 && line === '') return
+  // 首先分组连续的错误/警告行
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i]
+    if (i === lines.length - 1 && line === '') continue
 
-    const lineNumber = index + 1
-    let level = 'info'
+    const level = getLevel(line)
+    const isHighlight = level === 'error' || level === 'warning'
 
-    // 检测错误级别：WARN/ERROR/FATAL/SEVERE 等关键字
-    if (line.match(/(\/|: |\[)WARN(ING)?(\]|:| )/i)) level = 'warning'
-    else if (line.match(/(\/|: |\[)(ERR(OR)?|FATAL|SEVERE)(\]|:| )/i)) level = 'error'
-    else if (line.match(/(\/|: |\[)(DEBUG)(\]|:| )/i)) level = 'debug'
-    // Java 堆栈错误：Exception/Error/Throwable 类名
-    else if (/\b[A-Za-z0-9_$]*(?:Exception|Error|Throwable)\b/.test(line)) level = 'error'
-    // Java 堆栈行：以 "at " 开头的行（包括缩进）
-    else if (/^\s*at\s+/.test(line)) level = 'error'
-    // "Caused by:" 行
-    else if (/^Caused by:\s*/.test(line)) level = 'error'
+    if (isHighlight) {
+      if (currentGroup && currentGroup.level === level) {
+        currentGroup.lines.push(line)
+      } else {
+        if (currentGroup) groups.push(currentGroup)
+        currentGroup = { start: i, level, lines: [line] }
+      }
+    } else {
+      if (currentGroup) {
+        groups.push(currentGroup)
+        currentGroup = null
+      }
+      groups.push({ start: i, level: 'info', lines: [line] })
+    }
+  }
+  if (currentGroup) groups.push(currentGroup)
 
-    const entryClass = level === 'error' ? 'entry-error' : 'entry-no-error'
-    const levelClass = `level-${level}`
-    let formatted = formatContent(line)
+  // 渲染分组
+  groups.forEach((group) => {
+    if (group.level === 'info' || group.level === 'debug') {
+      group.lines.forEach((line, idx) => {
+        const lineIndex = group.start + idx
+        const lineNumber = lineIndex + 1
+        const level = getLevel(line)
+        const levelClass = `level-${level}`
+        const entryClass = level === 'error' ? 'entry-error' : 'entry-no-error'
+        let formatted = formatContent(line)
+        html += `<tr class="log-row ${entryClass}" id="L${lineNumber}">
+          <td class="line-num">${lineNumber}</td>
+          <td class="line-content"><span class="level ${levelClass}">${formatted}</span></td>
+        </tr>`
+      })
+    } else {
+      // 错误/警告组：使用 rowspan 合并背景
+      const rowClass = group.level === 'error' ? 'entry-error' : 'entry-warning'
+      const bgClass = `bg-${group.level}-group`
 
-    html += `<tr class="log-row ${entryClass}" id="L${lineNumber}">
-      <td class="line-num">${lineNumber}</td>
-      <td class="line-content"><span class="level ${levelClass}">${formatted}</span></td>
-    </tr>`
+      group.lines.forEach((line, idx) => {
+        const lineIndex = group.start + idx
+        const lineNumber = lineIndex + 1
+        const isFirst = idx === 0
+        const levelClass = `level-${group.level}`
+        let formatted = formatContent(line)
+
+        if (isFirst) {
+          html += `<tr class="log-row ${rowClass} ${bgClass}" id="L${lineNumber}">
+            <td class="line-num" rowspan="${group.lines.length}">${group.lines.map((_, i) => group.start + i + 1).join('<br>')}</td>
+            <td class="line-content"><span class="level ${levelClass}">${formatted}</span></td>
+          </tr>`
+        } else {
+          html += `<tr class="log-row ${rowClass} ${bgClass}" id="L${lineNumber}">
+            <td class="line-content"><span class="level ${levelClass}">${formatted}</span></td>
+          </tr>`
+        }
+      })
+    }
   })
 
-  html += '</table>'
+  html += '</tbody></table>'
   return html
 }
 
