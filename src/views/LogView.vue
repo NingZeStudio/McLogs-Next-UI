@@ -247,10 +247,18 @@ const scrollToFooter = () => {
     <p class="text-muted-foreground">{{ error }}</p>
   </div>
 
-  <div v-else :class="isFullscreen ? 'fixed inset-0 z-50 bg-background' : 'container mx-auto px-2 sm:px-4 py-6'">
-    <div :class="isFullscreen ? 'h-full flex flex-col' : 'flex flex-col gap-6'">
-      <div v-if="!isFullscreen" class="space-y-4">
-        <div class="rounded-lg border bg-card p-4 shadow-sm">
+  <div v-else :class="isFullscreen ? 'fixed inset-0 z-50 bg-background' : 'container mx-auto px-1 sm:px-2 py-4'">
+    <div :class="isFullscreen ? 'h-full flex flex-col' : 'flex flex-col'">
+      <div v-if="!isFullscreen" class="space-y-0">
+        <div class="mb-2">
+          <span class="inline-block px-3 py-2 rounded-md border border-amber-500/50 bg-amber-50 dark:bg-amber-950/30">
+            <p class="text-sm text-amber-800 dark:text-amber-200 font-medium">
+              {{ t('tips') }}
+            </p>
+          </span>
+        </div>
+
+        <div class="bg-card px-3 py-2">
           <div class="flex items-center justify-between gap-3 mb-4">
             <div class="min-w-0 flex-1">
               <h1 class="text-lg font-bold break-all">{{ log.title }}</h1>
@@ -321,17 +329,9 @@ const scrollToFooter = () => {
               <span>{{ t('scroll_footer') }}</span>
             </button>
           </div>
-
-          <div class="mt-3">
-            <span class="inline-block p-3 rounded-md border border-amber-500/50 bg-amber-50 dark:bg-amber-950/30">
-              <p class="text-sm text-amber-800 dark:text-amber-200 font-medium">
-                {{ t('tips') }}
-              </p>
-            </span>
-          </div>
         </div>
 
-        <div v-if="log.analysis?.problems?.length > 0" class="rounded-lg border border-destructive/50 bg-destructive/5 p-4">
+        <div v-if="log.analysis?.problems?.length > 0" class="bg-destructive/5 p-4 border border-destructive/50 rounded-lg">
           <h3 class="font-semibold text-destructive mb-3 flex items-center gap-2">
             <AlertTriangle class="h-4 w-4" />
             {{ t('problems_detected') }}
@@ -340,14 +340,14 @@ const scrollToFooter = () => {
             <div
               v-for="(prob, idx) in log.analysis.problems"
               :key="idx"
-              class="text-sm p-3 rounded-md border border-destructive/20 bg-destructive/5"
+              class="text-sm py-2"
             >
               <div class="font-medium flex items-start gap-2">
                 <AlertTriangle class="h-4 w-4 text-destructive flex-shrink-0 mt-0.5" />
                 <span>{{ prob.message }}</span>
                 <span v-if="prob.line" class="text-xs text-muted-foreground">(行 {{ prob.line }})</span>
               </div>
-              <div v-if="prob.solutions?.length" class="mt-2 pl-5 border-l-2 border-destructive/30 space-y-1">
+              <div v-if="prob.solutions?.length" class="mt-2 pl-5 space-y-1">
                 <div
                   v-for="sol in prob.solutions"
                   :key="sol.message"
@@ -361,7 +361,7 @@ const scrollToFooter = () => {
           </div>
         </div>
 
-        <div v-if="log.analysis?.information?.length > 0" class="rounded-lg border bg-card p-4">
+        <div v-if="log.analysis?.information?.length > 0" class="bg-card p-4 border border-border rounded-lg">
           <h3 class="font-semibold mb-3 flex items-center gap-2">
             <Server class="h-4 w-4" />
             {{ t('server_info') }}
@@ -370,19 +370,17 @@ const scrollToFooter = () => {
             <div
               v-for="info in log.analysis.information"
               :key="info.label"
-              class="text-sm py-2 px-3 rounded-md bg-secondary/50"
+              class="text-sm"
             >
               <span class="text-muted-foreground">{{ info.label }}: </span>
               <span class="font-medium">{{ info.value }}</span>
             </div>
           </div>
         </div>
-
-
       </div>
 
       <div :class="isFullscreen ? 'flex-1 flex flex-col min-h-0' : 'w-full'">
-        <div class="rounded-t-lg bg-[#2d2d2d] px-4 py-2.5 flex items-center justify-between border-b border-gray-600">
+        <div class="bg-[#2a2a2a] px-4 py-2 flex items-center justify-between -mx-1 sm:-mx-2 mt-4">
           <div class="flex items-center gap-2">
             <div class="flex gap-1.5">
               <div class="w-2.5 h-2.5 rounded-full bg-red-500"></div>
@@ -429,7 +427,7 @@ const scrollToFooter = () => {
         </div>
 
         <div :class="isFullscreen ? 'flex-1 flex flex-col min-h-0' : ''">
-          <div :class="[isFullscreen ? 'flex-1 overflow-y-auto' : 'overflow-x-auto', isFullscreen ? '' : 'rounded-b-lg']" class="bg-[#2a2a2a] border border-gray-600 relative">
+          <div :class="[isFullscreen ? 'flex-1 overflow-y-auto' : 'overflow-x-auto']" class="bg-[#2a2a2a] relative -mx-1 sm:-mx-2 py-2">
             <div
               class="log-content font-mono text-xs text-gray-100"
               :class="{ 'show-errors-only': showErrorsOnly, 'log-wrap': wrapLines, 'log-no-wrap': !wrapLines }"
@@ -460,6 +458,9 @@ const scrollToFooter = () => {
   vertical-align: top;
   text-align: right;
   width: 40px;
+  font-size: 13px;
+  color: #6b7280;
+  line-height: inherit;
 }
 
 .log-content .line-content {

@@ -1,6 +1,6 @@
 export const pageTitleTemplates = {
   home: '首页 - LogShare.CN',
-  log: (title?: string, id?: string) => `${title || id || '日志'} - LogShare.CN`,
+  log: (title?: string, id?: string) => `${title || '日志'}${id ? ` [#${id}]` : ''} - LogShare.CN`,
   apiDocs: 'API 文档 - LogShare.CN',
   imprint: '法律声明 - LogShare.CN',
   privacy: '隐私政策 - LogShare.CN',

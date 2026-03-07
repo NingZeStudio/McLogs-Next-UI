@@ -60,7 +60,7 @@ onMounted(() => {
     <header class="border-b bg-card/80 sticky top-0 z-40 w-full backdrop-blur-xl shadow-sm">
       <div class="container mx-auto px-4 h-16 flex items-center justify-between">
         <RouterLink to="/" class="flex items-center gap-2 font-bold text-xl">
-          <span class="text-primary">LogShare.CN</span><sup class="text-xs text-muted-foreground">v1.2.0</sup>
+          <span class="text-primary">LogShare.CN</span><sup class="text-xs text-muted-foreground">v1.3.0 RC1</sup>
         </RouterLink>
         <nav class="flex items-center gap-2">
           <RouterLink to="/api-docs" class="text-sm font-bold bg-primary text-primary-foreground px-4 py-2 rounded-md hover:bg-primary/90 transition-colors">API 文档</RouterLink>
@@ -84,6 +84,8 @@ onMounted(() => {
       <div class="container mx-auto px-4 flex flex-col items-center gap-3 text-xs text-muted-foreground">
         <div class="flex flex-wrap items-center justify-center gap-3">
           <span>&copy; 2026 LogShare.CN</span>
+          <span class="hidden sm:inline">|</span>
+          <span>v1.3.0 RC1</span>
           <span class="hidden sm:inline">|</span>
           <a
             href="https://qm.qq.com/q/XoXSt8askA"
