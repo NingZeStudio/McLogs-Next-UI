@@ -103,11 +103,10 @@ export const zhCN = {
   'announcement_qq_group_title': '官方 QQ 群开放',
   'announcement_qq_group_desc': '欢迎加入我们的官方 QQ 交流群，与其他用户交流经验，获取最新技术支持和更新资讯。',
   'announcement_join_qq_group': '加入官方 QQ 群',
-  'announcement_ai_upgrade_title': 'AI 大模型智能分析升级维护',
-  'announcement_ai_upgrade_desc': 'AI 大模型智能分析功能暂时下架进行升级维护，我们将更换更强大的模型并准备专项资金以提供更好的服务。',
-  'announcement_ai_upgrade_reason_1': '更换更强大的 AI 模型，提升分析准确度',
-  'announcement_ai_upgrade_reason_2': '准备专项资金，确保服务稳定运行',
-  'announcement_footer': '感谢您的理解与支持！',
+  'announcement_sponsor_title': '赞助支持计划',
+  'announcement_sponsor_desc': '如果您觉得这个项目对您有帮助，欢迎通过赞助支持我们。您的每一份支持都是我们继续前进的动力。',
+  'announcement_sponsor_action': '立即赞助',
+  'announcement_footer': '感谢您的关注与支持！',
 
   // 教程相关
   'tutorials': '教程中心',
@@ -233,11 +232,10 @@ export const zhTW = {
   'announcement_qq_group_title': '官方 QQ 群開放',
   'announcement_qq_group_desc': '歡迎加入我們的官方 QQ 交流群，與其他用戶交流經驗，獲取最新技術支援和更新資訊。',
   'announcement_join_qq_group': '加入官方 QQ 群',
-  'announcement_ai_upgrade_title': 'AI 大模型智能分析升級維護',
-  'announcement_ai_upgrade_desc': 'AI 大模型智能分析功能暫時下架進行升級維護，我們將更換更強大的模型並準備專項資金以提供更好的服務。',
-  'announcement_ai_upgrade_reason_1': '更換更強大的 AI 模型，提升分析準確度',
-  'announcement_ai_upgrade_reason_2': '準備專項資金，確保服務穩定運行',
-  'announcement_footer': '感謝您的理解與支援！',
+  'announcement_sponsor_title': '贊助支持計劃',
+  'announcement_sponsor_desc': '如果您覺得這個項目對您有幫助，歡迎通過贊助支持我們。您的每一份支持都是我們繼續前進的動力。',
+  'announcement_sponsor_action': '立即贊助',
+  'announcement_footer': '感謝您的關注與支持！',
 
   // 教程相關
   'tutorials': '教程中心',

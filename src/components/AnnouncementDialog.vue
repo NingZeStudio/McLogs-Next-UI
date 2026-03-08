@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
-import { X, MessageCircle, Brain } from 'lucide-vue-next'
+import { X, MessageCircle, Heart } from 'lucide-vue-next'
 import { t } from '@/lib/i18n'
 
 const isOpen = ref(false)
@@ -102,23 +102,26 @@ defineExpose({
                   </div>
                 </div>
 
-                <!-- AI 大模型下架公告 -->
-                <div class="bg-gradient-to-br from-amber-500/10 to-orange-600/5 border border-amber-500/20 rounded-xl p-4">
+                <!-- 赞助公告 -->
+                <div class="bg-gradient-to-br from-red-500/10 to-orange-600/5 border border-red-500/20 rounded-xl p-4">
                   <div class="flex items-start gap-3">
-                    <div class="p-2 bg-amber-500/20 rounded-lg shrink-0">
-                      <Brain class="h-5 w-5 text-amber-500" />
+                    <div class="p-2 bg-red-500/20 rounded-lg shrink-0">
+                      <Heart class="h-5 w-5 text-red-500" />
                     </div>
                     <div class="flex-1">
-                      <h3 class="font-semibold text-lg mb-2 text-amber-400">
-                        {{ t('announcement_ai_upgrade_title') }}
+                      <h3 class="font-semibold text-lg mb-2 text-red-400">
+                        {{ t('announcement_sponsor_title') }}
                       </h3>
-                      <p class="text-sm text-muted-foreground mb-1">
-                        {{ t('announcement_ai_upgrade_desc') }}
+                      <p class="text-sm text-muted-foreground mb-3">
+                        {{ t('announcement_sponsor_desc') }}
                       </p>
-                      <ul class="text-xs text-muted-foreground space-y-1 mt-2 list-disc list-inside">
-                        <li>{{ t('announcement_ai_upgrade_reason_1') }}</li>
-                        <li>{{ t('announcement_ai_upgrade_reason_2') }}</li>
-                      </ul>
+                      <RouterLink
+                        to="/sponsor"
+                        class="inline-flex items-center gap-2 bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
+                      >
+                        <Heart class="h-4 w-4" />
+                        {{ t('announcement_sponsor_action') }}
+                      </RouterLink>
                     </div>
                   </div>
                 </div>
