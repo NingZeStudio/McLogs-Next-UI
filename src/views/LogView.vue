@@ -530,7 +530,7 @@ mark {
 
 .log-content {
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: 'Fira Code', 'JetBrains Mono', 'Cascadia Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-family: 'Fira Code', 'Cascadia Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
   font-weight: 500;
   font-size: 14px;
   line-height: 1.3;
