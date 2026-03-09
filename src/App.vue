@@ -130,7 +130,7 @@ onMounted(() => {
 
     <main class="flex-1">
       <RouterView v-slot="{ Component }">
-        <Transition name="fade" mode="out-in">
+        <Transition name="fade" mode="out-in" appear>
           <component :is="Component" />
         </Transition>
       </RouterView>
@@ -195,11 +195,14 @@ onMounted(() => {
 
 <style scoped>
 .fade-enter-active,
-.fade-leave-active {
+.fade-leave-active,
+.fade-enter-active.appear,
+.fade-appear-active {
   transition: opacity 0.2s ease, transform 0.2s ease;
 }
 
-.fade-enter-from {
+.fade-enter-from,
+.fade-appear-from {
   opacity: 0;
   transform: translateY(10px);
 }

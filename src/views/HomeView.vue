@@ -5,6 +5,7 @@ import { useRouter } from 'vue-router'
 import { t } from '@/lib/i18n'
 import { parseArchive, isArchiveFile, isTextFile, type ExtractedFile } from '@/lib/archiveParser'
 import { Archive, FileText, X, CheckCircle, AlertCircle, Loader2, Copy, Link, BookText, Upload } from 'lucide-vue-next'
+import DotBackground from '@/components/ui/DotBackground.vue'
 
 const content = ref('')
 const loading = ref(false)
@@ -249,10 +250,13 @@ const copyAllLinks = async () => {
 </script>
 
 <template>
-  <div class="bg-background relative">
-    <div class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.1),rgba(255,255,255,0))] dark:bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(120,119,198,0.15),rgba(0,0,0,0))]"></div>
+  <div class="relative min-h-screen bg-transparent">
+    <!-- 交互式网格点状背景 -->
+    <DotBackground />
     
-    <div class="container mx-auto px-4 py-8">
+    <!-- 内容区域 - 在 canvas 之上 -->
+    <div class="relative z-10">
+      <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col items-center text-center space-y-4 mb-8">
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight">
            LogShare.CN <small>v1.3.6</small>
@@ -265,7 +269,7 @@ const copyAllLinks = async () => {
 
       <div class="max-w-4xl mx-auto pb-4">
         <div
-          class="rounded-xl border bg-card text-card-foreground shadow-sm overflow-hidden"
+          class="rounded-xl border bg-card/80 backdrop-blur-xl text-card-foreground shadow-sm overflow-hidden"
           @dragover="handleDragOver"
           @dragleave="handleDragLeave"
           @drop="handleDrop"
@@ -436,6 +440,7 @@ const copyAllLinks = async () => {
         </div>
 
       </div>
+    </div>
     </div>
 
     <div class="fixed top-24 right-4 z-50 space-y-2">
