@@ -29,7 +29,7 @@ const logContent = ref('')
 const loading = ref(true)
 const error = ref('')
 const showErrorsOnly = ref(false)
-const wrapLines = ref(true)
+const wrapLines = ref(false)
 const searchTerm = ref('')
 const searchIndex = ref(0)
 const searchResults = ref<number[]>([])
@@ -137,7 +137,7 @@ const downloadLog = async () => {
     window.URL.revokeObjectURL(url)
   } catch (e) {
     console.error('Failed to download log:', e)
-    alert('下载日志失败')
+    alert(t('download_failed'))
   }
 }
 
@@ -236,11 +236,11 @@ const scrollToProblems = () => {
 <template>
   <div v-if="loading" class="container mx-auto px-4 py-12 text-center">
     <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto"></div>
-    <p class="mt-4 text-muted-foreground">正在加载日志...</p>
+    <p class="mt-4 text-muted-foreground">{{ t('loading_log') }}</p>
   </div>
 
   <div v-else-if="error" class="container mx-auto px-4 py-12 text-center">
-    <h2 class="text-2xl font-bold text-destructive">错误</h2>
+    <h2 class="text-2xl font-bold text-destructive">{{ t('error_title') }}</h2>
     <p class="text-muted-foreground">{{ error }}</p>
   </div>
 
@@ -250,7 +250,7 @@ const scrollToProblems = () => {
       <div v-if="!isFullscreen" class="flex items-start justify-between gap-4 px-4 py-3">
         <div class="min-w-0 flex-1">
           <h1 class="text-2xl font-bold break-all">{{ log.title }}</h1>
-          <p class="text-sm text-muted-foreground mt-1">ID: <code class="bg-muted px-2 py-0.5 rounded text-xs">{{ log.id }}</code></p>
+          <p class="text-sm text-muted-foreground mt-1">{{ t('log_type') }}: <code class="bg-muted px-2 py-0.5 rounded text-xs">{{ log.id }}</code></p>
         </div>
         <div class="flex items-center gap-2">
           <button
@@ -292,30 +292,25 @@ const scrollToProblems = () => {
           <div class="flex flex-wrap gap-2">
             <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-destructive/10 border border-destructive/20">
               <AlertTriangle class="h-4 w-4 text-destructive" />
-              <span class="text-sm font-medium">{{ log.analysis.problems.length }} 个问题</span>
+              <span class="text-sm font-medium">{{ t('problems_count').replace('{count}', log.analysis.problems.length.toString()) }}</span>
             </div>
             <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-warning/10 border border-warning/20">
               <AlertTriangle class="h-4 w-4 text-warning" />
-              <span class="text-sm font-medium">{{ log.analysis.problems.filter((p: any) => p.severity === 'warning').length }} 警告</span>
+              <span class="text-sm font-medium">{{ t('warnings_count').replace('{count}', log.analysis.problems.filter((p: any) => p.severity === 'warning').length.toString()) }}</span>
             </div>
             <div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-green-500/10 border border-green-500/20">
               <Check class="h-4 w-4 text-green-500" />
-              <span class="text-sm font-medium">{{ log.analysis.problems.filter((p: any) => p.solutions?.length).length }} 可解决</span>
+              <span class="text-sm font-medium">{{ t('solvable_count').replace('{count}', log.analysis.problems.filter((p: any) => p.solutions?.length).length.toString()) }}</span>
             </div>
           </div>
           <button
             @click="scrollToProblems"
             class="w-full mt-3 py-2 text-sm text-primary hover:bg-primary/5 rounded-lg transition-colors"
           >
-            查看详情 ↓
+            {{ t('view_details') }} ↓
           </button>
         </div>
 
-        <!-- 无信息时显示占位 -->
-        <div v-if="!log.analysis?.information?.length && !log.analysis?.problems?.length" class="bg-card p-8 text-center">
-          <BookText class="h-12 w-12 mx-auto text-muted-foreground/50 mb-3" />
-          <p class="text-muted-foreground">暂无服务器信息</p>
-        </div>
       </div>
 
       <!-- 日志查看器 -->
@@ -328,24 +323,24 @@ const scrollToProblems = () => {
               @click="toggleErrors"
               :class="showErrorsOnly ? 'bg-destructive text-destructive-foreground' : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'"
               class="flex items-center gap-1.5 text-sm rounded-md transition-colors px-2.5 py-1.5"
-              :title="showErrorsOnly ? '显示全部日志' : '仅显示错误'"
+              :title="showErrorsOnly ? t('show_all') : t('show_errors_only')"
             >
               <AlertTriangle class="h-4 w-4" />
-              <span class="hidden sm:inline">{{ showErrorsOnly ? '显示全部' : '仅错误' }}</span>
+              <span class="hidden sm:inline">{{ showErrorsOnly ? t('show_all') : t('show_errors_only') }}</span>
             </button>
             <button
               @click="wrapLines = !wrapLines"
               :class="wrapLines ? 'bg-primary text-primary-foreground' : 'bg-secondary hover:bg-secondary/80 text-secondary-foreground'"
               class="flex items-center gap-1.5 text-sm rounded-md transition-colors px-2.5 py-1.5"
-              :title="wrapLines ? '关闭换行' : '开启换行'"
+              :title="wrapLines ? t('auto_wrap') : t('auto_wrap')"
             >
               <WrapText class="h-4 w-4" />
-              <span class="hidden sm:inline">{{ wrapLines ? '换行' : '不换行' }}</span>
+              <span class="hidden sm:inline">{{ wrapLines ? t('wrap_lines_on') : t('wrap_lines_off') }}</span>
             </button>
           </div>
 
           <!-- 搜索组 -->
-          <div class="flex items-center gap-1.5 px-3 border-l border-r flex-1 min-w-[200px]">
+          <div class="flex items-center gap-1.5 px-3 flex-1 min-w-[200px] w-full lg:w-auto lg:max-w-[calc(100%-280px)]">
             <div class="relative flex-1">
               <Search class="h-3.5 w-3.5 text-muted-foreground absolute left-2 top-1/2 -translate-y-1/2" />
               <input
@@ -373,7 +368,12 @@ const scrollToProblems = () => {
           </div>
 
           <!-- 操作组 -->
-          <div class="flex items-center gap-1.5 pl-3 border-l ml-auto">
+          <div class="flex items-center gap-1.5 pl-3 border-l ml-auto lg:flex">
+            <div class="flex items-center gap-1 text-muted-foreground pr-2 border-r">
+              <span>{{ t('click_share_button_tip').split('{icon}')[0] }}</span>
+              <Share2 class="h-4 w-4" />
+              <span>{{ t('click_share_button_tip').split('{icon}')[1] }}</span>
+            </div>
             <button
               @click="downloadLog"
               class="p-2 rounded-md hover:bg-secondary transition-colors"
@@ -394,7 +394,7 @@ const scrollToProblems = () => {
               target="_blank"
               rel="noopener noreferrer"
               class="p-2 rounded-md hover:bg-secondary transition-colors"
-              :title="'查看原始日志'"
+              :title="t('view_raw_log')"
             >
               <Code class="h-4 w-4" />
             </a>
@@ -435,7 +435,7 @@ const scrollToProblems = () => {
       >
         <div class="flex items-center gap-2 mb-4 pb-3 border-b">
           <AlertTriangle class="h-5 w-5 text-destructive" />
-          <h2 class="font-semibold">问题详情</h2>
+          <h2 class="font-semibold">{{ t('problem_details') }}</h2>
         </div>
         <div class="space-y-3">
           <div
@@ -447,9 +447,9 @@ const scrollToProblems = () => {
               <AlertTriangle class="h-5 w-5 text-destructive flex-shrink-0 mt-0.5" />
               <div class="flex-1 min-w-0">
                 <p class="font-medium text-sm">{{ prob.message }}</p>
-                <p v-if="prob.line" class="text-xs text-muted-foreground mt-1">行号：{{ prob.line }}</p>
+                <p v-if="prob.line" class="text-xs text-muted-foreground mt-1">{{ t('line_number') }}: {{ prob.line }}</p>
                 <div v-if="prob.solutions?.length" class="mt-3 space-y-2">
-                  <p class="text-xs font-medium text-green-600">解决方案：</p>
+                  <p class="text-xs font-medium text-green-600">{{ t('solution') }}:</p>
                   <div
                     v-for="sol in prob.solutions"
                     :key="sol.message"

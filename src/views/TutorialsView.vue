@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { ChevronRight } from 'lucide-vue-next'
+import { t } from '@/lib/i18n'
 
 const tutorials = [
   {
     id: 'mobileglues-setup',
-    title: '关于FoldCraftLauncher和ZalithLauncher2使用MobileGlues渲染器',
+    title: '关于 FoldCraftLauncher 和 ZalithLauncher2 使用 MobileGlues 渲染器',
     description: '在 Android 设备上配置 MobileGlues 渲染器，提升 Minecraft 游戏性能和兼容性',
     category: '客户端配置',
     author: '用户提供内容'
@@ -30,9 +31,9 @@ const tutorials = [
   <div class="container mx-auto px-4 py-8 max-w-4xl">
     <!-- 页面头部 -->
     <div class="mb-8">
-      <h1 class="text-3xl font-bold mb-2">教程中心</h1>
+      <h1 class="text-3xl font-bold mb-2">{{ t('tutorials_center') }}</h1>
       <p class="text-muted-foreground">
-        常见问题解决方案和使用教程
+        {{ t('tutorials_description') }}
       </p>
     </div>
 
@@ -68,10 +69,10 @@ const tutorials = [
 
     <!-- 快速链接 -->
     <div class="mt-8 p-4 bg-muted/30 rounded-lg border border-border">
-      <h2 class="text-sm font-semibold mb-2">需要帮助？</h2>
+      <h2 class="text-sm font-semibold mb-2">{{ t('need_help') }}</h2>
       <div class="flex flex-wrap gap-3 text-xs">
         <RouterLink to="/api-docs" class="text-primary hover:underline">
-          查看 API 文档
+          {{ t('view_api_docs') }}
         </RouterLink>
         <span class="text-muted-foreground">|</span>
         <a
@@ -80,7 +81,7 @@ const tutorials = [
           rel="noopener noreferrer"
           class="text-primary hover:underline"
         >
-          加入官方 QQ 群
+          {{ t('join_qq_group_link') }}
         </a>
       </div>
     </div>

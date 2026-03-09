@@ -33,7 +33,7 @@ const sortedSponsors = computed(() => {
             <Heart class="h-4 w-4 text-red-500" />
           </div>
           <div>
-            <p class="text-xs text-muted-foreground">赞助人数</p>
+            <p class="text-xs text-muted-foreground">{{ t('sponsor_count') }}</p>
             <p class="text-xl font-bold">{{ sponsorCount }}</p>
           </div>
         </div>
@@ -44,7 +44,7 @@ const sortedSponsors = computed(() => {
             <DollarSign class="h-4 w-4 text-green-500" />
           </div>
           <div>
-            <p class="text-xs text-muted-foreground">赞助总额</p>
+            <p class="text-xs text-muted-foreground">{{ t('total_amount') }}</p>
             <p class="text-xl font-bold">¥{{ totalAmount }}</p>
           </div>
         </div>
@@ -55,7 +55,7 @@ const sortedSponsors = computed(() => {
             <QrCode class="h-4 w-4 text-blue-500" />
           </div>
           <div>
-            <p class="text-xs text-muted-foreground">支持方式</p>
+            <p class="text-xs text-muted-foreground">{{ t('support_methods') }}</p>
             <p class="text-xl font-bold">2</p>
           </div>
         </div>
@@ -66,7 +66,7 @@ const sortedSponsors = computed(() => {
             <Heart class="h-4 w-4 text-purple-500" />
           </div>
           <div>
-            <p class="text-xs text-muted-foreground">感谢有您</p>
+            <p class="text-xs text-muted-foreground">{{ t('thanks_message') }}</p>
             <p class="text-xl font-bold">❤️</p>
           </div>
         </div>

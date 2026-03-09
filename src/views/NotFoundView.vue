@@ -2,6 +2,7 @@
 import { RouterLink } from 'vue-router'
 import { FileQuestion, Home, ArrowLeft } from 'lucide-vue-next'
 import { setPageTitle } from '@/lib/pageTitle'
+import { t } from '@/lib/i18n'
 import { onMounted } from 'vue'
 
 onMounted(() => {
@@ -25,9 +26,9 @@ onMounted(() => {
 
       <div class="space-y-4">
         <h1 class="text-8xl font-black text-primary">404</h1>
-        <h2 class="text-3xl font-bold text-foreground">页面未找到</h2>
+        <h2 class="text-3xl font-bold text-foreground">{{ t('page_not_found') }}</h2>
         <p class="text-lg text-muted-foreground max-w-md mx-auto">
-          抱歉，您访问的页面不存在或已被移除。请检查 URL 是否正确，或返回首页。
+          {{ t('page_not_found_desc') }}
         </p>
       </div>
 
@@ -37,20 +38,20 @@ onMounted(() => {
           class="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-6 py-3 rounded-xl font-medium hover:bg-primary/90 transition-colors shadow-lg hover:shadow-xl"
         >
           <Home class="h-5 w-5" />
-          返回首页
+          {{ t('back_to_home') }}
         </RouterLink>
         <button
           @click="$router.back()"
           class="inline-flex items-center justify-center gap-2 bg-secondary text-secondary-foreground px-6 py-3 rounded-xl font-medium hover:bg-secondary/80 transition-colors border border-border"
         >
           <ArrowLeft class="h-5 w-5" />
-          返回上一页
+          {{ t('back_to_previous') }}
         </button>
       </div>
 
       <div class="pt-8 border-t border-border">
         <p class="text-sm text-muted-foreground">
-          如果您认为这是一个错误，请联系网站管理员。
+          {{ t('contact_admin_hint') }}
         </p>
       </div>
     </div>

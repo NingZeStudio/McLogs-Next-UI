@@ -49,7 +49,7 @@ const onFileSelected = async (event: Event) => {
 
 const handleFile = async (file: File) => {
   if (file.size > 50 * 1024 * 1024) {
-    error.value = '文件过大 (最大 50MB)'
+    error.value = t('file_too_large_50mb')
     return
   }
 
@@ -63,17 +63,17 @@ const handleFile = async (file: File) => {
       const files = await parseArchive(file)
 
       if (files.length === 0) {
-        error.value = '压缩包中没有可识别的文本文件 (.txt, .log, .yml 等)'
+        error.value = t('no_files_in_archive')
         loading.value = false
         return
       }
 
       extractedFiles.value = files
       loading.value = false
-      addNotification('success', `成功解析 ${files.length} 个文件`)
+      addNotification('success', t('files_parsed_success').replace('{count}', files.length.toString()))
     } catch (e: any) {
       console.error('Failed to parse archive:', e)
-      error.value = e.message || '解析压缩包失败'
+      error.value = e.message || t('parse_archive_failed')
       loading.value = false
     }
   } else if (isTextFile(file.name)) {
@@ -86,12 +86,12 @@ const handleFile = async (file: File) => {
         size: text.length,
         path: file.name
       }]
-      addNotification('success', '文件加载成功')
+      addNotification('success', t('file_loaded_success'))
     } catch (e) {
       error.value = t('file_read_error')
     }
   } else {
-    error.value = '不支持的文件格式，请上传 .zip 压缩包或 .txt/.log 等文本文件'
+    error.value = t('unsupported_file_format')
   }
 }
 
@@ -218,13 +218,13 @@ const save = async () => {
 const copyAllLinks = async () => {
   const successResults = uploadResults.value.filter(r => r.success && r.id)
   if (successResults.length === 0) {
-    error.value = '没有成功上传的日志文件'
+    error.value = t('no_uploaded_files')
     return
   }
 
   const baseUrl = window.location.origin + window.location.pathname
   const links = successResults.map(r => `${baseUrl}${r.id}`).join('\n')
-  const message = `批量上传的日志链接：\n${links}`
+  const message = t('copy_links') + ':\n' + links
 
   try {
     await navigator.clipboard.writeText(message)
@@ -233,7 +233,7 @@ const copyAllLinks = async () => {
       isCopySuccess.value = false
     }, 2000)
   } catch (err) {
-    console.error('复制失败:', err)
+    console.error('Failed to copy:', err)
     const textArea = document.createElement('textarea')
     textArea.value = message
     document.body.appendChild(textArea)
@@ -255,11 +255,11 @@ const copyAllLinks = async () => {
     <div class="container mx-auto px-4 py-8">
       <div class="flex flex-col items-center text-center space-y-4 mb-8">
         <h1 class="text-4xl md:text-5xl font-bold tracking-tight">
-           LogShare.CN <small>v1.3.0 RC1</small>
+           LogShare.CN <small>v1.3.6</small>
         </h1>
 
         <p class="text-muted-foreground max-w-xl">
-                    分享与分析 <span class="text-primary">Minecraft & Hytale</span> 服务器和客户端日志
+                    {{ t('home_subtitle') }}
         </p>
       </div>
 
@@ -278,7 +278,7 @@ const copyAllLinks = async () => {
                 <div class="w-2.5 h-2.5 rounded-full bg-green-500/80"></div>
               </div>
               <span class="text-sm text-muted-foreground ml-2">
-                {{ extractedFiles.length > 0 ? `${extractedFiles.length} 个文件` : '日志上传' }}
+                {{ extractedFiles.length > 0 ? t('files_count').replace('{count}', extractedFiles.length.toString()) : t('paste_log') }}
               </span>
             </div>
             <div class="flex items-center gap-2">
@@ -312,7 +312,7 @@ const copyAllLinks = async () => {
                 class="inline-flex items-center gap-1.5 text-sm font-medium bg-primary text-primary-foreground px-3 py-1.5 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
               >
                 <CheckCircle class="h-4 w-4" />
-                {{ loading ? t('saving') : '批量上传' }}
+                {{ loading ? t('saving') : t('batch_upload') }}
               </button>
               <button
                 v-if="extractedFiles.length > 0 && uploadResults.length > 0"
@@ -320,7 +320,7 @@ const copyAllLinks = async () => {
                 class="inline-flex items-center gap-1.5 text-sm font-medium bg-green-600 text-white px-3 py-1.5 rounded-md hover:bg-green-700 transition-colors"
               >
                 <Copy class="h-4 w-4" />
-                {{ isCopySuccess ? '已复制' : '复制链接' }}
+                {{ isCopySuccess ? t('copied') : t('copy_links') }}
               </button>
             </div>
           </div>
@@ -328,7 +328,7 @@ const copyAllLinks = async () => {
           <div v-show="isDragging" class="absolute inset-0 bg-primary/5 border-2 border-dashed border-primary rounded-xl flex items-center justify-center z-10 pointer-events-none">
             <div class="text-center">
               <Upload class="h-12 w-12 mx-auto text-primary mb-2" />
-              <p class="text-lg font-medium text-primary">释放以上传文件</p>
+              <p class="text-lg font-medium text-primary">{{ t('release_to_upload') }}</p>
             </div>
           </div>
 
@@ -337,7 +337,7 @@ const copyAllLinks = async () => {
               <div class="flex items-center gap-2 mb-2">
                 <Loader2 class="h-4 w-4 animate-spin text-primary" />
                 <span class="text-sm text-muted-foreground">
-                  正在上传 ({{ uploadProgress.current }}/{{ uploadProgress.total }}): {{ uploadProgress.uploading }}
+                  {{ t('uploading_progress').replace('{current}', uploadProgress.current.toString()).replace('{total}', uploadProgress.total.toString()).replace('{filename}', uploadProgress.uploading) }}
                 </span>
               </div>
               <div class="w-full bg-muted rounded-full h-2">
@@ -372,12 +372,12 @@ const copyAllLinks = async () => {
                         target="_blank"
                       >
                         <Link class="h-3 w-3" />
-                        <span>查看</span>
+                        <span>{{ t('view') }}</span>
                       </a>
                     </template>
                     <template v-else-if="uploadResults.find(r => r.path === file.path)">
                       <AlertCircle class="h-5 w-5 text-destructive" />
-                      <span class="text-xs text-destructive" :title="uploadResults.find(r => r.path === file.path)?.error">失败</span>
+                      <span class="text-xs text-destructive" :title="uploadResults.find(r => r.path === file.path)?.error">{{ t('failed') }}</span>
                     </template>
                   </template>
                   <button
@@ -386,7 +386,7 @@ const copyAllLinks = async () => {
                     :disabled="loading"
                     class="inline-flex items-center text-xs bg-primary text-primary-foreground px-3 py-1.5 rounded-md hover:bg-primary/90 transition-colors disabled:opacity-50"
                   >
-                    {{ loading ? t('saving') : '上传' }}
+                    {{ loading ? t('saving') : t('upload') }}
                   </button>
                   <button
                     v-if="!uploadProgress"
@@ -400,10 +400,9 @@ const copyAllLinks = async () => {
             </div>
 
             <div class="mt-4 pt-4 border-t flex items-center justify-between text-sm text-muted-foreground">
-              <span>共 {{ extractedFiles.length }} 个文件</span>
+              <span>{{ t('files_count').replace('{count}', extractedFiles.length.toString()) }}</span>
               <span v-if="uploadResults.length > 0">
-                成功：{{ uploadResults.filter(r => r.success).length }} |
-                失败：{{ uploadResults.filter(r => !r.success).length }}
+                {{ t('upload_success_count').replace('{success}', uploadResults.filter(r => r.success).length.toString()).replace('{failed}', uploadResults.filter(r => !r.success).length.toString()) }}
               </span>
             </div>
           </div>
@@ -425,8 +424,8 @@ const copyAllLinks = async () => {
                   <FileText class="h-12 w-12 opacity-50" />
                   <BookText class="h-12 w-12 opacity-50" />
                 </div>
-                <p class="text-sm">拖拽文件到此处上传，或直接粘贴日志内容</p>
-                <p class="text-xs mt-1 text-muted-foreground">支持 .zip 压缩包和 .txt/.log 等文本文件</p>
+                <p class="text-sm">{{ t('drag_drop_hint') }}</p>
+                <p class="text-xs mt-1 text-muted-foreground">{{ t('supported_formats_hint') }}</p>
               </div>
             </div>
 
