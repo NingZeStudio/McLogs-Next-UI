@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { ref } from 'vue'
-import { Menu, X, ChevronRight, Palette, Languages, Heart } from 'lucide-vue-next'
+import { Menu, X, ChevronRight, Palette, Languages, Heart, Github, BookOpen } from 'lucide-vue-next'
 import ThemeSettings from '@/components/ThemeSettings.vue'
 
 const isOpen = ref(false)
 const docsOpen = ref(false)
 const langOpen = ref(false)
+const openSourceOpen = ref(false)
 const isThemeSettingsOpen = ref(false)
 
 const toggleNav = () => {
@@ -13,6 +14,7 @@ const toggleNav = () => {
   if (isOpen.value) {
     docsOpen.value = false
     langOpen.value = false
+    openSourceOpen.value = false
   }
 }
 
@@ -24,6 +26,7 @@ const toggleDocs = () => {
   docsOpen.value = !docsOpen.value
   if (docsOpen.value) {
     langOpen.value = false
+    openSourceOpen.value = false
   }
 }
 
@@ -31,6 +34,15 @@ const toggleLang = () => {
   langOpen.value = !langOpen.value
   if (langOpen.value) {
     docsOpen.value = false
+    openSourceOpen.value = false
+  }
+}
+
+const toggleOpenSource = () => {
+  openSourceOpen.value = !openSourceOpen.value
+  if (openSourceOpen.value) {
+    docsOpen.value = false
+    langOpen.value = false
   }
 }
 
@@ -65,10 +77,10 @@ const currentLang = ref(localStorage.getItem('preferred_language') || 'zh-CN')
 
     <!-- 移动端菜单面板 -->
     <Transition
-      enter-active-class="transition ease-out duration-200"
+      enter-active-class="transition-all duration-200"
       enter-from-class="opacity-0 translate-y-2"
       enter-to-class="opacity-100 translate-y-0"
-      leave-active-class="transition ease-in duration-150"
+      leave-active-class="transition-all duration-150"
       leave-from-class="opacity-100 translate-y-0"
       leave-to-class="opacity-0 translate-y-2"
     >
@@ -83,7 +95,10 @@ const currentLang = ref(localStorage.getItem('preferred_language') || 'zh-CN')
               @click="toggleDocs"
               class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
             >
-              <span>教程与文档</span>
+              <span class="flex items-center gap-2">
+                <BookOpen class="h-4 w-4" />
+                教程与文档
+              </span>
               <ChevronRight
                 class="h-4 w-4 transition-transform"
                 :class="{ 'rotate-90': docsOpen }"
@@ -162,6 +177,52 @@ const currentLang = ref(localStorage.getItem('preferred_language') || 'zh-CN')
             </Transition>
           </div>
 
+          <!-- 开源地址（二级菜单） -->
+          <div class="relative">
+            <button
+              @click="toggleOpenSource"
+              class="w-full flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
+            >
+              <span class="flex items-center gap-2">
+                <Github class="h-4 w-4" />
+                开源地址
+              </span>
+              <ChevronRight
+                class="h-4 w-4 transition-transform"
+                :class="{ 'rotate-90': openSourceOpen }"
+              />
+            </button>
+
+            <!-- 二级菜单内容 -->
+            <Transition
+              enter-active-class="transition-all duration-200"
+              enter-from-class="max-h-0 opacity-0"
+              enter-to-class="max-h-40 opacity-100"
+              leave-active-class="transition-all duration-150"
+              leave-from-class="max-h-40 opacity-100"
+              leave-to-class="max-h-0 opacity-0"
+            >
+              <div v-if="openSourceOpen" class="ml-4 mt-1 space-y-1 border-l-2 border-border pl-3">
+                <a
+                  href="https://github.com/NingZeStudio/McLogs-Next-UI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
+                  前端开源地址
+                </a>
+                <a
+                  href="https://github.com/NingZeStudio/McLogs-Next-API"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="block px-3 py-2 rounded-lg text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
+                  后端开源地址
+                </a>
+              </div>
+            </Transition>
+          </div>
+
           <!-- 赞助支持 -->
           <RouterLink
             to="/sponsor"
@@ -172,21 +233,16 @@ const currentLang = ref(localStorage.getItem('preferred_language') || 'zh-CN')
             赞助支持
           </RouterLink>
 
-          <!-- 其他菜单项 -->
-          <RouterLink
-            to="/imprint"
-            @click="closeNav"
-            class="block px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
+          <!-- 团队主页 -->
+          <a
+            href="https://github.com/NingZeStudio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
           >
-            法律声明
-          </RouterLink>
-          <RouterLink
-            to="/privacy"
-            @click="closeNav"
-            class="block px-3 py-2.5 rounded-lg text-sm font-medium hover:bg-muted/80 transition-colors"
-          >
-            隐私政策
-          </RouterLink>
+            <Github class="h-4 w-4" />
+            团队主页
+          </a>
         </div>
       </div>
     </Transition>

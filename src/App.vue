@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref, onMounted } from 'vue'
 import { RouterView, RouterLink, useRoute } from 'vue-router'
-import { X, Palette, Heart } from 'lucide-vue-next'
+import { X, Palette, Heart, ChevronDown, Github } from 'lucide-vue-next'
 import PwaUpdateToast from '@/components/PwaUpdateToast.vue'
 import PwaInstallPrompt from '@/components/PwaInstallPrompt.vue'
 import AnnouncementDialog from '@/components/AnnouncementDialog.vue'
@@ -12,6 +12,7 @@ import { setPageTitle, getCurrentPageTemplate } from '@/lib/pageTitle'
 
 const showEasterEgg = ref(false)
 const isThemeSettingsOpen = ref(false)
+const showOpenSourceMenu = ref(false)
 
 const easterEggImages = [
   'https://cdn.zeinklab.com/myfile/images/974d9feef5429ded.jpeg',
@@ -40,17 +41,72 @@ onMounted(() => {
         </RouterLink>
 
         <!-- 中间导航链接 -->
-        <nav class="hidden lg:flex items-center gap-8 absolute left-1/2 -translate-x-1/2">
-          <RouterLink to="/sponsor" class="flex items-center gap-1.5 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+        <nav class="hidden lg:flex items-center gap-1 absolute left-1/2 -translate-x-1/2">
+          <RouterLink to="/sponsor" class="flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
             <Heart class="h-4 w-4" />
             赞助支持
           </RouterLink>
-          <RouterLink to="/tutorials" class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          
+          <RouterLink to="/tutorials" class="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
             教程中心
           </RouterLink>
-          <RouterLink to="/api-docs" class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+          <RouterLink to="/api-docs" class="px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors">
             API 文档
           </RouterLink>
+          
+          <!-- 团队主页 -->
+          <a
+            href="https://github.com/NingZeStudio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+          >
+            <Github class="h-4 w-4" />
+            团队主页
+          </a>
+          
+          <!-- 开源地址二级菜单 -->
+          <div class="relative" @mouseenter="showOpenSourceMenu = true" @mouseleave="showOpenSourceMenu = false">
+            <button
+              class="flex items-center gap-1.5 px-3 py-2 rounded-md text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+            >
+              <Github class="h-4 w-4" />
+              开源地址
+              <ChevronDown class="h-3.5 w-3.5 transition-transform" :class="{ 'rotate-180': showOpenSourceMenu }" />
+            </button>
+            
+            <!-- 二级菜单下拉 -->
+            <Transition
+              enter-active-class="transition-all duration-200"
+              enter-from-class="opacity-0 translate-y-1"
+              enter-to-class="opacity-100 translate-y-0"
+              leave-active-class="transition-all duration-150"
+              leave-from-class="opacity-100 translate-y-0"
+              leave-to-class="opacity-0 translate-y-1"
+            >
+              <div
+                v-show="showOpenSourceMenu"
+                class="absolute top-full left-0 mt-1 w-56 bg-card border border-border rounded-lg shadow-lg overflow-hidden z-50"
+              >
+                <a
+                  href="https://github.com/NingZeStudio/McLogs-Next-UI"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors"
+                >
+                  <span class="font-medium">前端开源地址</span>
+                </a>
+                <a
+                  href="https://github.com/NingZeStudio/McLogs-Next-API"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="flex items-center gap-2 px-4 py-2.5 text-sm text-muted-foreground hover:text-foreground hover:bg-muted/50 transition-colors border-t border-border"
+                >
+                  <span class="font-medium">后端开源地址</span>
+                </a>
+              </div>
+            </Transition>
+          </div>
         </nav>
 
         <!-- 右侧工具按钮 -->
@@ -97,8 +153,14 @@ onMounted(() => {
         </div>
         <div class="flex items-center gap-3">
           <RouterLink to="/sponsor" class="hover:underline transition-colors">赞助支持</RouterLink>
-          <RouterLink to="/imprint" class="hover:underline transition-colors">法律声明</RouterLink>
-          <RouterLink to="/privacy" class="hover:underline transition-colors">隐私政策</RouterLink>
+          <a
+            href="https://github.com/NingZeStudio/"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hover:underline transition-colors"
+          >
+            团队主页
+          </a>
         </div>
       </div>
     </footer>

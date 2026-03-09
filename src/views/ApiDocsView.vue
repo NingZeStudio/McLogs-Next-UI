@@ -1,184 +1,81 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { t } from '@/lib/i18n'
+import { Copy, Check } from 'lucide-vue-next'
 
-const activeTab = ref('js')
+const activeTab = ref<'overview' | 'endpoints' | 'sdks' | 'limits'>('overview')
+const copiedEndpoint = ref('')
 
-const setTab = (tab: string) => {
-    activeTab.value = tab
+const copyEndpoint = async (endpoint: string) => {
+    try {
+        await navigator.clipboard.writeText(endpoint)
+        copiedEndpoint.value = endpoint
+        setTimeout(() => copiedEndpoint.value = '', 2000)
+    } catch (err) {
+        console.error('Failed to copy:', err)
+    }
 }
-</script>
 
-<template>
-    <div class="container mx-auto px-4 py-12 max-w-4xl">
-        <h1 class="text-3xl font-bold mb-6">{{ t('api_docs') }}</h1>
-        <p class="mb-8 text-muted-foreground">
-            {{ t('home_subtitle') }} <strong>LogShare.CN</strong> {{ t('integration_text') }}
-        </p>
-
-        <div class="space-y-16">
-            <!-- Paste Log -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">{{ t('paste_log') }}</h2>
-                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold">POST</span>
-                </div>
-                
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/log
-                </div>
-
-                <div class="space-y-4">
-                    <h3 class="text-lg font-medium">请求参数</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm border-collapse border border-border">
-                            <thead class="bg-muted">
-                                <tr>
-                                    <th class="border border-border p-2 text-left">字段</th>
-                                    <th class="border border-border p-2 text-left">类型</th>
-                                    <th class="border border-border p-2 text-left">描述</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td class="border border-border p-2 font-mono text-primary">content</td>
-                                    <td class="border border-border p-2">string</td>
-                                    <td class="border border-border p-2">原始日志文件内容字符串。最大长度为10MiB和25k行，必要时将被截断。</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">调用示例</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button 
-                                @click="setTab('js')" 
-                                :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']"
-                            >JavaScript</button>
-                            <button 
-                                @click="setTab('php')" 
-                                :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']"
-                            >PHP</button>
-                            <button 
-                                @click="setTab('curl')" 
-                                :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']"
-                            >cURL</button>
-                        </div>
-                    </div>
-
-                    <!-- JS Example -->
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> content = <span class="text-green-400">"Your log content here..."</span>;
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/log'</span>, {
-    method: <span class="text-green-400">'POST'</span>,
-    body: <span class="text-cyan-400">new</span> <span class="text-yellow-400">URLSearchParams</span>({ content })
-});
-<span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
-                    </div>
-
-                    <!-- PHP Example -->
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$content</span> = <span class="text-green-400">"Your log content here..."</span>;
-<span class="text-pink-400">$ch</span> = <span class="text-yellow-400">curl_init</span>(<span class="text-green-400">'https://api.logshare.cn/1/log'</span>);
-<span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_POSTFIELDS, <span class="text-yellow-400">http_build_query</span>([<span class="text-green-400">'content'</span> => <span class="text-pink-400">$content</span>]));
-<span class="text-pink-400">$response</span> = <span class="text-yellow-400">curl_exec</span>(<span class="text-pink-400">$ch</span>);
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-pink-400">$response</span>, <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">curl_close</span>(<span class="text-pink-400">$ch</span>);
-<span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
-                    </div>
-
-                    <!-- cURL Example -->
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.logshare.cn/1/log'</pre>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <h3 class="font-semibold text-sm">成功响应 (200 OK)</h3>
-                        <pre class="bg-muted p-3 rounded-md text-xs border border-border overflow-x-auto whitespace-pre">{
+const endpoints = [
+    {
+        method: 'POST',
+        methodType: 'post',
+        path: '/1/log',
+        title: t('paste_log'),
+        description: '提交新的日志内容到服务器，生成分享链接和分析结果。',
+        params: [
+            { name: 'content', type: 'string', required: true, desc: '原始日志文件内容字符串。最大长度为 10 MiB 和 25,000 行。' }
+        ],
+        response: {
+            success: {
+                code: 200,
+                example: `{
     "success": true,
     "id": "8FlTowW",
     "url": "https://logshare.cn/8FlTowW",
     "raw": "https://api.logshare.cn/1/raw/8FlTowW"
-}</pre>
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="font-semibold text-sm">错误响应</h3>
-                        <pre class="bg-muted p-3 rounded-md text-xs border border-border overflow-x-auto whitespace-pre">{
+}`
+            },
+            error: {
+                example: `{
     "success": false,
     "error": "必需的 POST 参数 'content' 为空。"
-}</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Analyse -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">{{ t('instant_analysis') }}</h2>
-                    <span class="bg-blue-600 text-white px-2 py-1 rounded text-xs font-bold">POST</span>
-                </div>
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/analyse
-                </div>
-                <p class="text-sm text-muted-foreground">{{ t('instant_analysis_desc') }}</p>
-                <div class="space-y-2">
-                    <h3 class="font-semibold text-sm">{{ t('request_params') }}</h3>
-                    <p class="text-xs text-muted-foreground">{{ t('params_same_as_log') }} <code class="bg-muted px-1 rounded">/1/log</code> {{ t('params_required_field') }} <code class="bg-muted px-1 rounded font-mono text-primary">content</code>)。</p>
-                </div>
-            </section>
-
-            <!-- Insights -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">{{ t('get_insights') }}</h2>
-                    <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
-                </div>
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/insights/[id]
-                </div>
-                <p class="text-sm text-muted-foreground">{{ t('get_insights_desc') }}</p>
-
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">{{ t('call_examples') }}</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button @click="setTab('js')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">JavaScript</button>
-                            <button @click="setTab('php')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">PHP</button>
-                            <button @click="setTab('curl')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">cURL</button>
-                        </div>
-                    </div>
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/insights/8FlTowW'</span>);
-<span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
-                    </div>
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/insights/8FlTowW'</span>), <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
-                    </div>
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.logshare.cn/1/insights/8FlTowW</pre>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <h3 class="font-semibold text-sm">{{ t('response_example') }}</h3>
-                    <pre class="bg-muted p-3 rounded-md text-xs overflow-x-auto whitespace-pre max-h-64 border border-border">{
+}`
+            }
+        },
+        examples: {
+            js: `const content = "Your log content here...";
+const response = await fetch('https://api.logshare.cn/1/log', {
+    method: 'POST',
+    body: new URLSearchParams({ content })
+});
+const data = await response.json();
+console.log(data);`,
+            php: `<?php
+$content = "Your log content here...";
+$ch = curl_init('https://api.logshare.cn/1/log');
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query(['content' => $content]));
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+curl_close($ch);
+print_r($data);`,
+            curl: `curl -X POST --data-urlencode 'content@path/to/latest.log' 'https://api.logshare.cn/1/log'`
+        }
+    },
+    {
+        method: 'GET',
+        methodType: 'get',
+        path: '/1/insights/[id]',
+        title: t('get_insights'),
+        description: t('get_insights_desc'),
+        params: [
+            { name: 'id', type: 'string', required: true, desc: '日志的唯一标识符' }
+        ],
+        response: {
+            success: {
+                code: 200,
+                example: `{
     "analysis": {
         "software": "Spigot",
         "version": "1.20.1",
@@ -191,339 +88,535 @@ curl https://api.logshare.cn/1/insights/8FlTowW</pre>
             }
         ]
     }
-}</pre>
-                </div>
-            </section>
-
-            <!-- Raw Log -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">{{ t('get_raw_log') }}</h2>
-                    <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
-                </div>
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/raw/[id]
-                </div>
-                <p class="text-sm text-muted-foreground">{{ t('get_raw_log_desc') }}</p>
-
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">{{ t('call_examples') }}</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button @click="setTab('js')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">JavaScript</button>
-                            <button @click="setTab('php')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">PHP</button>
-                            <button @click="setTab('curl')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">cURL</button>
-                        </div>
-                    </div>
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/raw/8FlTowW'</span>);
-<span class="text-cyan-400">const</span> text = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">text</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(text);</pre>
-                    </div>
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">echo</span> <span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/raw/8FlTowW'</span>);</pre>
-                    </div>
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.logshare.cn/1/raw/8FlTowW</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- AI Analysis -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">{{ t('ai_analysis') }}</h2>
-                    <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
-                </div>
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/ai-analysis/[id]
-                </div>
-                <p class="text-sm text-muted-foreground">{{ t('ai_analysis_desc') }}</p>
-
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">{{ t('call_examples') }}</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button @click="setTab('js')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">JavaScript</button>
-                            <button @click="setTab('php')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">PHP</button>
-                            <button @click="setTab('curl')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">cURL</button>
-                        </div>
-                    </div>
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/ai-analysis/8FlTowW'</span>);
-<span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
-                    </div>
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/ai-analysis/8FlTowW'</span>), <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
-                    </div>
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.logshare.cn/1/ai-analysis/8FlTowW</pre>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <h3 class="font-semibold text-sm">{{ t('response_example') }}</h3>
-                    <pre class="bg-muted p-3 rounded-md text-xs overflow-x-auto whitespace-pre max-h-64 border border-border">{
+}`
+            }
+        },
+        examples: {
+            js: `const response = await fetch('https://api.logshare.cn/1/insights/8FlTowW');
+const data = await response.json();
+console.log(data);`,
+            php: `<?php
+$data = json_decode(file_get_contents('https://api.logshare.cn/1/insights/8FlTowW'), true);
+print_r($data);`,
+            curl: `curl https://api.logshare.cn/1/insights/8FlTowW`
+        }
+    },
+    {
+        method: 'GET',
+        methodType: 'get',
+        path: '/1/raw/[id]',
+        title: t('get_raw_log'),
+        description: t('get_raw_log_desc'),
+        params: [
+            { name: 'id', type: 'string', required: true, desc: '日志的唯一标识符' }
+        ],
+        response: {
+            success: {
+                code: 200,
+                type: 'text/plain',
+                example: `[2023-01-01 12:00:00] [Server thread/INFO]: Starting minecraft server version 1.19.2
+[2023-01-01 12:00:01] [Server thread/INFO]: Using default channel type
+...`
+            }
+        },
+        examples: {
+            js: `const response = await fetch('https://api.logshare.cn/1/raw/8FlTowW');
+const text = await response.text();
+console.log(text);`,
+            php: `<?php
+echo file_get_contents('https://api.logshare.cn/1/raw/8FlTowW');`,
+            curl: `curl https://api.logshare.cn/1/raw/8FlTowW`
+        }
+    },
+    {
+        method: 'DELETE',
+        methodType: 'delete',
+        path: '/1/delete/[id]',
+        title: t('delete_log'),
+        description: '删除指定 ID 的日志文件。此操作不可逆，请谨慎使用。',
+        params: [
+            { name: 'id', type: 'string', required: true, desc: '要删除的日志文件的唯一标识符' }
+        ],
+        response: {
+            success: {
+                code: 200,
+                example: `{
     "success": true,
-    "analysis": "### 分析结果\n\n检测到内存溢出错误 (java.lang.OutOfMemoryError)...\n\n### 解决方案\n\n1. 增加 JVM 分配的内存..."
-}</pre>
-                </div>
-            </section>
-
-            <!-- Limits -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">{{ t('get_limits') }}</h2>
-                    <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
-                </div>
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/limits
-                </div>
-                <p class="text-sm text-muted-foreground">{{ t('get_limits_desc') }}</p>
-
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">{{ t('call_examples') }}</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button @click="setTab('js')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">JavaScript</button>
-                            <button @click="setTab('php')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">PHP</button>
-                            <button @click="setTab('curl')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">cURL</button>
-                        </div>
-                    </div>
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/limits'</span>);
-<span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
-                    </div>
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/limits'</span>), <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
-                    </div>
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.logshare.cn/1/limits</pre>
-                    </div>
-                </div>
-
-                <div class="space-y-2">
-                    <h3 class="font-semibold text-sm">{{ t('response_example') }}</h3>
-                    <pre class="bg-muted p-3 rounded-md text-xs overflow-x-auto whitespace-pre border border-border">{
+    "message": "Log deleted successfully"
+}`
+            },
+            error: {
+                example: `{
+    "success": false,
+    "error": "Log not found"
+}`
+            }
+        },
+        examples: {
+            js: `const logId = "8FlTowW";
+const response = await fetch(\`https://api.logshare.cn/1/delete/\${logId}\`, {
+    method: 'DELETE',
+    headers: {
+        'Content-Type': 'application/json'
+    }
+});
+const data = await response.json();
+console.log(data);`,
+            php: `<?php
+$logId = "8FlTowW";
+$ch = curl_init("https://api.logshare.cn/1/delete/$logId");
+curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "DELETE");
+curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+curl_setopt($ch, CURLOPT_HTTPHEADER, [
+    "Content-Type: application/json"
+]);
+$response = curl_exec($ch);
+$data = json_decode($response, true);
+curl_close($ch);
+print_r($data);`,
+            curl: `curl -X DELETE -H "Content-Type: application/json" 'https://api.logshare.cn/1/delete/8FlTowW'`
+        }
+    },
+    {
+        method: 'GET',
+        methodType: 'get',
+        path: '/1/errors/rate',
+        title: t('rate_limit_info'),
+        description: '返回标准的 429 Too Many Requests 错误响应。这主要用于测试或前端显示标准错误消息。',
+        params: [],
+        response: {
+            success: {
+                code: 429,
+                example: `{
+    "success": false,
+    "error": "Unfortunately you have exceeded the rate limit for the current time period. Please try again later."
+}`
+            }
+        },
+        examples: {
+            js: `const response = await fetch('https://api.logshare.cn/1/errors/rate');
+const data = await response.json();
+console.log(data);`,
+            php: `<?php
+$data = json_decode(file_get_contents('https://api.logshare.cn/1/errors/rate'), true);
+print_r($data);`,
+            curl: `curl https://api.logshare.cn/1/errors/rate`
+        }
+    },
+    {
+        method: 'GET',
+        methodType: 'get',
+        path: '/1/limits',
+        title: t('get_limits'),
+        description: t('get_limits_desc'),
+        params: [],
+        response: {
+            success: {
+                code: 200,
+                example: `{
     "storageTime": 86400,
     "maxLength": 10485760,
     "maxLines": 25000
-}</pre>
+}`
+            }
+        },
+        examples: {
+            js: `const response = await fetch('https://api.logshare.cn/1/limits');
+const data = await response.json();
+console.log(data);`,
+            php: `<?php
+$data = json_decode(file_get_contents('https://api.logshare.cn/1/limits'), true);
+print_r($data);`,
+            curl: `curl https://api.logshare.cn/1/limits`
+        }
+    }
+]
+
+const methodTypeClass = (type: string) => {
+    const classes: Record<string, string> = {
+        post: 'bg-blue-100 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400',
+        get: 'bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-400',
+        delete: 'bg-red-100 text-red-700 dark:bg-red-900/30 dark:text-red-400'
+    }
+    return classes[type] || 'bg-gray-100 text-gray-700 dark:bg-gray-800 dark:text-gray-400'
+}
+</script>
+
+<template>
+    <div class="container mx-auto px-3 py-6 max-w-4xl">
+        <!-- 页面标题 -->
+        <header class="mb-8">
+            <h1 class="text-2xl font-bold mb-2">
+                {{ t('api_docs') }}
+            </h1>
+            <p class="text-sm text-muted-foreground leading-relaxed">
+                {{ t('home_subtitle') }} <strong class="text-foreground">LogShare.CN</strong> {{ t('integration_text') }}
+            </p>
+        </header>
+
+        <!-- 导航标签 -->
+        <div class="flex flex-wrap gap-2 mb-8 border-b border-border">
+            <button
+                @click="activeTab = 'overview'"
+                :class="[
+                    'px-3 py-2 text-sm font-medium transition-colors border-b-2',
+                    activeTab === 'overview'
+                        ? 'border-primary text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground'
+                ]"
+            >
+                概述
+            </button>
+            <button
+                @click="activeTab = 'endpoints'"
+                :class="[
+                    'px-3 py-2 text-sm font-medium transition-colors border-b-2',
+                    activeTab === 'endpoints'
+                        ? 'border-primary text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground'
+                ]"
+            >
+                API 端点
+            </button>
+            <button
+                @click="activeTab = 'sdks'"
+                :class="[
+                    'px-3 py-2 text-sm font-medium transition-colors border-b-2',
+                    activeTab === 'sdks'
+                        ? 'border-primary text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground'
+                ]"
+            >
+                {{ t('local_sdks') }}
+            </button>
+            <button
+                @click="activeTab = 'limits'"
+                :class="[
+                    'px-3 py-2 text-sm font-medium transition-colors border-b-2',
+                    activeTab === 'limits'
+                        ? 'border-primary text-foreground'
+                        : 'border-transparent text-muted-foreground hover:text-foreground'
+                ]"
+            >
+                {{ t('api_limits') }}
+            </button>
+        </div>
+
+        <!-- 概述 -->
+        <div v-if="activeTab === 'overview'" class="space-y-6">
+            <section class="space-y-4">
+                <h2 class="text-lg font-semibold">API 基础信息</h2>
+                
+                <div class="grid gap-4 sm:grid-cols-2">
+                    <div class="p-4 rounded-lg border border-border bg-card">
+                        <div class="text-xs text-muted-foreground mb-1">基础 URL</div>
+                        <div class="font-mono text-sm flex items-center justify-between">
+                            <span>https://api.logshare.cn</span>
+                            <button
+                                @click="copyEndpoint('https://api.logshare.cn')"
+                                class="text-muted-foreground hover:text-foreground transition-colors"
+                            >
+                                <Copy v-if="copiedEndpoint !== 'https://api.logshare.cn'" class="h-3.5 w-3.5" />
+                                <Check v-else class="h-3.5 w-3.5" />
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="p-4 rounded-lg border border-border bg-card">
+                        <div class="text-xs text-muted-foreground mb-1">API 版本</div>
+                        <div class="font-mono text-sm">v1</div>
+                    </div>
+                    
+                    <div class="p-4 rounded-lg border border-border bg-card">
+                        <div class="text-xs text-muted-foreground mb-1">协议</div>
+                        <div class="text-sm">HTTPS</div>
+                    </div>
+                    
+                    <div class="p-4 rounded-lg border border-border bg-card">
+                        <div class="text-xs text-muted-foreground mb-1">认证</div>
+                        <div class="text-sm">无需认证（公共 API）</div>
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 dark:bg-amber-950/30 border-l-4 border-amber-500 p-4 rounded-r-lg">
+                    <p class="text-sm text-amber-800 dark:text-amber-200">
+                        所有 API 请求均使用 HTTPS 协议，HTTP 请求会被自动重定向到 HTTPS。
+                        速率限制为每分钟 60 个请求（按 IP 计算）。
+                    </p>
                 </div>
             </section>
 
-            <!-- Delete Log -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">删除日志文件</h2>
-                    <span class="bg-red-600 text-white px-2 py-1 rounded text-xs font-bold">DELETE</span>
+            <section class="space-y-4">
+                <h2 class="text-lg font-semibold">可用端点</h2>
+                <div class="rounded-lg border border-border overflow-hidden">
+                    <table class="w-full text-sm">
+                        <thead class="bg-muted/50">
+                            <tr>
+                                <th class="p-3 text-left font-medium text-muted-foreground">方法</th>
+                                <th class="p-3 text-left font-medium text-muted-foreground">端点</th>
+                                <th class="p-3 text-left font-medium text-muted-foreground">描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t border-border hover:bg-muted/30 transition-colors">
+                                <td class="p-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold" :class="methodTypeClass('post')">POST</span>
+                                </td>
+                                <td class="p-3 font-mono text-xs">/1/log</td>
+                                <td class="p-3 text-muted-foreground">提交日志</td>
+                            </tr>
+                            <tr class="border-t border-border hover:bg-muted/30 transition-colors">
+                                <td class="p-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold" :class="methodTypeClass('get')">GET</span>
+                                </td>
+                                <td class="p-3 font-mono text-xs">/1/insights/[id]</td>
+                                <td class="p-3 text-muted-foreground">获取分析结果</td>
+                            </tr>
+                            <tr class="border-t border-border hover:bg-muted/30 transition-colors">
+                                <td class="p-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold" :class="methodTypeClass('get')">GET</span>
+                                </td>
+                                <td class="p-3 font-mono text-xs">/1/raw/[id]</td>
+                                <td class="p-3 text-muted-foreground">获取原始日志</td>
+                            </tr>
+                            <tr class="border-t border-border hover:bg-muted/30 transition-colors">
+                                <td class="p-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold" :class="methodTypeClass('delete')">DELETE</span>
+                                </td>
+                                <td class="p-3 font-mono text-xs">/1/delete/[id]</td>
+                                <td class="p-3 text-muted-foreground">删除日志</td>
+                            </tr>
+                            <tr class="border-t border-border hover:bg-muted/30 transition-colors">
+                                <td class="p-3">
+                                    <span class="px-2 py-1 rounded text-xs font-bold" :class="methodTypeClass('get')">GET</span>
+                                </td>
+                                <td class="p-3 font-mono text-xs">/1/limits</td>
+                                <td class="p-3 text-muted-foreground">获取限制信息</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <!-- API 端点 -->
+        <div v-if="activeTab === 'endpoints'" class="space-y-8">
+            <div
+                v-for="(endpoint, index) in endpoints"
+                :key="index"
+                class="space-y-4"
+            >
+                <!-- 端点头部 -->
+                <div class="flex items-start justify-between flex-wrap gap-4">
+                    <div class="flex items-center gap-3">
+                        <span class="px-2.5 py-1 rounded text-xs font-bold" :class="methodTypeClass(endpoint.methodType)">
+                            {{ endpoint.method }}
+                        </span>
+                        <code class="text-sm font-mono">{{ endpoint.path }}</code>
+                    </div>
+                    <button
+                        @click="copyEndpoint(`https://api.logshare.cn${endpoint.path}`)"
+                        class="flex items-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    >
+                        <Copy v-if="copiedEndpoint !== `https://api.logshare.cn${endpoint.path}`" class="h-3.5 w-3.5" />
+                        <Check v-else class="h-3.5 w-3.5" />
+                        {{ copiedEndpoint === `https://api.logshare.cn${endpoint.path}` ? t('copied') : t('copy') }}
+                    </button>
                 </div>
 
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/delete/[id]
-                </div>
+                <!-- 描述 -->
+                <p class="text-sm text-muted-foreground">
+                    {{ endpoint.description }}
+                </p>
 
-                <p class="text-sm text-muted-foreground">删除指定 ID 的日志文件。此操作不可逆，请谨慎使用。</p>
-
-                <div class="space-y-4">
-                    <h3 class="text-lg font-medium">请求参数</h3>
-                    <div class="overflow-x-auto">
-                        <table class="w-full text-sm border-collapse border border-border">
-                            <thead class="bg-muted">
+                <!-- 请求参数 -->
+                <div v-if="endpoint.params.length > 0" class="space-y-2">
+                    <h3 class="text-sm font-semibold">请求参数</h3>
+                    <div class="rounded-lg border border-border overflow-hidden">
+                        <table class="w-full text-sm">
+                            <thead class="bg-muted/50">
                                 <tr>
-                                    <th class="border border-border p-2 text-left">字段</th>
-                                    <th class="border border-border p-2 text-left">类型</th>
-                                    <th class="border border-border p-2 text-left">描述</th>
+                                    <th class="p-2.5 text-left font-medium text-muted-foreground text-xs">参数</th>
+                                    <th class="p-2.5 text-left font-medium text-muted-foreground text-xs">类型</th>
+                                    <th class="p-2.5 text-left font-medium text-muted-foreground text-xs">必需</th>
+                                    <th class="p-2.5 text-left font-medium text-muted-foreground text-xs">描述</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td class="border border-border p-2 font-mono text-primary">id</td>
-                                    <td class="border border-border p-2">string</td>
-                                    <td class="border border-border p-2">要删除的日志文件的唯一标识符</td>
+                                <tr
+                                    v-for="param in endpoint.params"
+                                    :key="param.name"
+                                    class="border-t border-border"
+                                >
+                                    <td class="p-2.5 font-mono text-xs text-primary">{{ param.name }}</td>
+                                    <td class="p-2.5"><code class="bg-muted px-1.5 py-0.5 rounded text-xs">{{ param.type }}</code></td>
+                                    <td class="p-2.5">
+                                        <span v-if="param.required" class="text-xs text-destructive font-medium">必需</span>
+                                        <span v-else class="text-xs text-muted-foreground">可选</span>
+                                    </td>
+                                    <td class="p-2.5 text-xs text-muted-foreground">{{ param.desc }}</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
                 </div>
 
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">调用示例</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button
-                                @click="setTab('js')"
-                                :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']"
-                            >JavaScript</button>
-                            <button
-                                @click="setTab('php')"
-                                :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']"
-                            >PHP</button>
-                            <button
-                                @click="setTab('curl')"
-                                :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']"
-                            >cURL</button>
-                        </div>
-                    </div>
-
-                    <!-- JS Example -->
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> logId = <span class="text-green-400">"8FlTowW"</span>;
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">`https://api.logshare.cn/1/delete/<span class="text-yellow-400">${logId}</span>`</span>, {
-    method: <span class="text-green-400">'DELETE'</span>,
-    headers: {
-        'Content-Type': 'application/json'
-    }
-});
-<span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
-                    </div>
-
-                    <!-- PHP Example -->
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$logId</span> = <span class="text-green-400">"8FlTowW"</span>;
-<span class="text-pink-400">$ch</span> = <span class="text-yellow-400">curl_init</span>(<span class="text-green-400">"https://api.logshare.cn/1/delete/<span class="text-pink-400">$logId</span>"</span>);
-<span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_CUSTOMREQUEST, <span class="text-green-400">"DELETE"</span>);
-<span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_RETURNTRANSFER, <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">curl_setopt</span>(<span class="text-pink-400">$ch</span>, CURLOPT_HTTPHEADER, [
-    <span class="text-green-400">"Content-Type: application/json"</span>
-]);
-<span class="text-pink-400">$response</span> = <span class="text-yellow-400">curl_exec</span>(<span class="text-pink-400">$ch</span>);
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-pink-400">$response</span>, <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">curl_close</span>(<span class="text-pink-400">$ch</span>);
-<span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
-                    </div>
-
-                    <!-- cURL Example -->
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl -X DELETE -H "Content-Type: application/json" 'https://api.logshare.cn/1/delete/8FlTowW'</pre>
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div class="space-y-2">
-                        <h3 class="font-semibold text-sm">成功响应 (200 OK)</h3>
-                        <pre class="bg-muted p-3 rounded-md text-xs border border-border overflow-x-auto whitespace-pre">{
-    "success": true,
-    "message": "Log deleted successfully"
-}</pre>
-                    </div>
-                    <div class="space-y-2">
-                        <h3 class="font-semibold text-sm">错误响应</h3>
-                        <pre class="bg-muted p-3 rounded-md text-xs border border-border overflow-x-auto whitespace-pre">{
-    "success": false,
-    "error": "Log not found"
-}</pre>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Rate Error -->
-            <section class="space-y-6">
-                <div class="flex items-center gap-4">
-                    <h2 class="text-2xl font-semibold">速率限制错误信息</h2>
-                    <span class="bg-green-600 text-white px-2 py-1 rounded text-xs font-bold">GET</span>
-                </div>
-                <div class="font-mono bg-muted p-3 rounded-md overflow-x-auto text-sm border border-border">
-                    https://api.logshare.cn/1/errors/rate
-                </div>
-                <p class="text-sm text-muted-foreground">返回标准的 429 Too Many Requests 错误响应。这主要用于测试或前端显示标准错误消息。</p>
-
-                <div class="space-y-4">
-                    <div class="flex items-center justify-between">
-                        <h3 class="text-lg font-medium">调用示例</h3>
-                        <div class="flex bg-muted rounded-md p-1 border border-border">
-                            <button @click="setTab('js')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'js' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">JavaScript</button>
-                            <button @click="setTab('php')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'php' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">PHP</button>
-                            <button @click="setTab('curl')" :class="['px-3 py-1 text-xs rounded-sm transition-all', activeTab === 'curl' ? 'bg-background shadow-sm text-foreground' : 'text-muted-foreground hover:text-foreground']">cURL</button>
-                        </div>
-                    </div>
-                    <div v-show="activeTab === 'js'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">const</span> response = <span class="text-cyan-400">await</span> <span class="text-yellow-400">fetch</span>(<span class="text-green-400">'https://api.logshare.cn/1/errors/rate'</span>);
-<span class="text-cyan-400">const</span> data = <span class="text-cyan-400">await</span> response.<span class="text-yellow-400">json</span>();
-<span class="text-cyan-400">console</span>.<span class="text-yellow-400">log</span>(data);</pre>
-                    </div>
-                    <div v-show="activeTab === 'php'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-<span class="text-cyan-400">&lt;?php</span>
-<span class="text-pink-400">$data</span> = <span class="text-yellow-400">json_decode</span>(<span class="text-yellow-400">file_get_contents</span>(<span class="text-green-400">'https://api.logshare.cn/1/errors/rate'</span>), <span class="text-cyan-400">true</span>);
-<span class="text-yellow-400">print_r</span>(<span class="text-pink-400">$data</span>);</pre>
-                    </div>
-                    <div v-show="activeTab === 'curl'" class="relative animate-in fade-in duration-300">
-                        <pre class="bg-slate-950 text-slate-50 p-4 rounded-lg text-xs overflow-x-auto whitespace-pre leading-relaxed border border-slate-800">
-curl https://api.logshare.cn/1/errors/rate</pre>
-                    </div>
-                </div>
-
+                <!-- 代码示例 -->
                 <div class="space-y-2">
-                    <h3 class="font-semibold text-sm">响应示例</h3>
-                    <pre class="bg-muted p-3 rounded-md text-xs overflow-x-auto whitespace-pre border border-border">{
-    "success": false,
-    "error": "Unfortunately you have exceeded the rate limit for the current time period. Please try again later."
-}</pre>
-                </div>
-            </section>
+                    <h3 class="text-sm font-semibold">调用示例</h3>
+                    <div class="space-y-3">
+                        <!-- JavaScript -->
+                        <div class="rounded-lg border border-border overflow-hidden">
+                            <div class="bg-muted/50 px-3 py-2 text-xs text-muted-foreground border-b border-border">
+                                JavaScript
+                            </div>
+                            <pre class="bg-slate-950 text-slate-50 p-4 text-xs overflow-x-auto whitespace-pre leading-relaxed"><code>{{ endpoint.examples.js }}</code></pre>
+                        </div>
 
-            <!-- SDKs -->
-            <section class="space-y-6">
-                <h2 class="text-2xl font-semibold">本地 SDK</h2>
-                <p class="text-sm text-muted-foreground">我们为您提供了开箱即用的本地 SDK，您可以直接下载并集成到您的项目中。</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <a href="/sdk/mclogs-php-sdk.zip" download class="group block p-5 border rounded-xl hover:border-primary/50 hover:bg-primary/5 transition-all">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="font-bold text-lg group-hover:text-primary transition-colors">PHP SDK</div>
-                            <span class="text-[10px] bg-blue-100 text-blue-700 px-2 py-0.5 rounded font-bold">LOCAL</span>
+                        <!-- PHP -->
+                        <div class="rounded-lg border border-border overflow-hidden">
+                            <div class="bg-muted/50 px-3 py-2 text-xs text-muted-foreground border-b border-border">
+                                PHP
+                            </div>
+                            <pre class="bg-slate-950 text-slate-50 p-4 text-xs overflow-x-auto whitespace-pre leading-relaxed"><code>{{ endpoint.examples.php }}</code></pre>
                         </div>
-                        <div class="text-sm text-muted-foreground mb-4">轻量级 cURL 封装，支持粘贴、读取及分析日志。</div>
-                        <div class="text-xs font-medium text-primary flex items-center gap-1">
-                            点击下载 mclogs-php-sdk.zip
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                        </div>
-                    </a>
-                    <a href="/sdk/mclogs-js-sdk.zip" download class="group block p-5 border rounded-xl hover:border-primary/50 hover:bg-primary/5 transition-all">
-                        <div class="flex items-center justify-between mb-2">
-                            <div class="font-bold text-lg group-hover:text-primary transition-colors">JavaScript SDK</div>
-                            <span class="text-[10px] bg-yellow-100 text-yellow-700 px-2 py-0.5 rounded font-bold">LOCAL</span>
-                        </div>
-                        <div class="text-sm text-muted-foreground mb-4">基于 Fetch API，适用于浏览器或 Node.js 环境。</div>
-                        <div class="text-xs font-medium text-primary flex items-center gap-1">
-                            点击下载 mclogs-js-sdk.zip
-                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
-                        </div>
-                    </a>
-                </div>
-            </section>
 
-             <!-- Notes -->
-            <section class="space-y-4 bg-secondary/10 p-6 rounded-xl border border-border">
-                <h2 class="text-xl font-semibold">API 限制与规范</h2>
-                <ul class="list-disc list-inside text-sm space-y-2 text-muted-foreground">
-                    <li>速率限制：<strong>每分钟 60 个请求</strong> (按 IP 计算)。</li>
-                    <li>内容限制：最大 <strong>10 MiB</strong> 或 <strong>25,000 行</strong>。</li>
-                    <li>存储时间：日志在最后一次查看后至少保留 <strong>90 天</strong>。</li>
-                    <li>请务必在请求头中设置正确的 <code class="bg-muted px-1 rounded">Content-Type: application/x-www-form-urlencoded</code>。</li>
+                        <!-- cURL -->
+                        <div class="rounded-lg border border-border overflow-hidden">
+                            <div class="bg-muted/50 px-3 py-2 text-xs text-muted-foreground border-b border-border">
+                                cURL
+                            </div>
+                            <pre class="bg-slate-950 text-slate-50 p-4 text-xs overflow-x-auto whitespace-pre leading-relaxed"><code>{{ endpoint.examples.curl }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 响应示例 -->
+                <div class="space-y-2">
+                    <h3 class="text-sm font-semibold">响应示例</h3>
+                    <div class="grid gap-3 sm:grid-cols-2">
+                        <div class="rounded-lg border border-border overflow-hidden">
+                            <div class="bg-muted/50 px-3 py-2 text-xs text-muted-foreground border-b border-border flex items-center justify-between">
+                                <span>成功响应 {{ endpoint.response.success.code ? `(${endpoint.response.success.code} OK)` : '' }}</span>
+                                <span v-if="endpoint.response.success.type" class="text-muted-foreground">{{ endpoint.response.success.type }}</span>
+                            </div>
+                            <pre class="bg-slate-950 text-slate-50 p-4 text-xs overflow-x-auto whitespace-pre leading-relaxed"><code>{{ endpoint.response.success.example }}</code></pre>
+                        </div>
+                        <div v-if="endpoint.response.error" class="rounded-lg border border-border overflow-hidden">
+                            <div class="bg-muted/50 px-3 py-2 text-xs text-muted-foreground border-b border-border">
+                                错误响应
+                            </div>
+                            <pre class="bg-slate-950 text-slate-50 p-4 text-xs overflow-x-auto whitespace-pre leading-relaxed"><code>{{ endpoint.response.error.example }}</code></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- SDKs -->
+        <div v-if="activeTab === 'sdks'" class="space-y-6">
+            <p class="text-sm text-muted-foreground">
+                我们为您提供了开箱即用的本地 SDK，您可以直接下载并集成到您的项目中。
+            </p>
+            <div class="grid gap-4 sm:grid-cols-2">
+                <a
+                    href="/sdk/mclogs-php-sdk.zip"
+                    download
+                    class="group block p-5 border border-border rounded-lg hover:border-primary/50 hover:bg-primary/5 transition-all"
+                >
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="font-semibold group-hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-md bg-blue-100 dark:bg-blue-900/30 flex items-center justify-center text-blue-600 dark:text-blue-400 text-xs font-bold">PHP</span>
+                            PHP SDK
+                        </div>
+                        <span class="text-[10px] bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-400 px-2 py-0.5 rounded-full font-bold">LOCAL</span>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-4">轻量级 cURL 封装，支持粘贴、读取及分析日志。</p>
+                    <div class="text-xs font-medium text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                        点击下载 mclogs-php-sdk.zip
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    </div>
+                </a>
+                <a
+                    href="/sdk/mclogs-js-sdk.zip"
+                    download
+                    class="group block p-5 border border-border rounded-lg hover:border-primary/50 hover:bg-primary/5 transition-all"
+                >
+                    <div class="flex items-center justify-between mb-3">
+                        <div class="font-semibold group-hover:text-primary transition-colors flex items-center gap-2">
+                            <span class="w-8 h-8 rounded-md bg-yellow-100 dark:bg-yellow-900/30 flex items-center justify-center text-yellow-600 dark:text-yellow-400 text-xs font-bold">JS</span>
+                            JavaScript SDK
+                        </div>
+                        <span class="text-[10px] bg-yellow-100 dark:bg-yellow-900/30 text-yellow-700 dark:text-yellow-400 px-2 py-0.5 rounded-full font-bold">LOCAL</span>
+                    </div>
+                    <p class="text-sm text-muted-foreground mb-4">基于 Fetch API，适用于浏览器或 Node.js 环境。</p>
+                    <div class="text-xs font-medium text-primary flex items-center gap-1 group-hover:gap-2 transition-all">
+                        点击下载 mclogs-js-sdk.zip
+                        <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide lucide-download"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" x2="12" y1="15" y2="3"/></svg>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+        <!-- 限制 -->
+        <div v-if="activeTab === 'limits'" class="space-y-6">
+            <div class="rounded-lg border border-border bg-card p-5">
+                <h2 class="text-lg font-semibold mb-4">{{ t('api_limits') }}</h2>
+                <ul class="space-y-3 text-sm">
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary font-medium min-w-fit">{{ t('rate_limit') }}：</span>
+                        <span class="text-muted-foreground">每分钟 <strong class="text-foreground">60 个请求</strong>（按 IP 计算）</span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary font-medium min-w-fit">{{ t('content_limit') }}：</span>
+                        <span class="text-muted-foreground">最大 <strong class="text-foreground">10 MiB</strong> 或 <strong class="text-foreground">25,000 行</strong></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary font-medium min-w-fit">{{ t('storage_time') }}：</span>
+                        <span class="text-muted-foreground">日志在最后一次查看后至少保留 <strong class="text-foreground">90 天</strong></span>
+                    </li>
+                    <li class="flex items-start gap-3">
+                        <span class="text-primary font-medium min-w-fit">Content-Type：</span>
+                        <span class="text-muted-foreground"><code class="bg-muted px-1.5 py-0.5 rounded text-xs">application/x-www-form-urlencoded</code></span>
+                    </li>
                 </ul>
-            </section>
+            </div>
+
+            <div class="rounded-lg border border-border bg-card p-5">
+                <h2 class="text-lg font-semibold mb-4">错误码</h2>
+                <div class="rounded-lg border border-border overflow-hidden">
+                    <table class="w-full text-sm">
+                        <thead class="bg-muted/50">
+                            <tr>
+                                <th class="p-2.5 text-left font-medium text-muted-foreground text-xs">错误码</th>
+                                <th class="p-2.5 text-left font-medium text-muted-foreground text-xs">描述</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-t border-border">
+                                <td class="p-2.5 font-mono text-xs">400</td>
+                                <td class="p-2.5 text-muted-foreground">请求参数错误</td>
+                            </tr>
+                            <tr class="border-t border-border">
+                                <td class="p-2.5 font-mono text-xs">404</td>
+                                <td class="p-2.5 text-muted-foreground">资源未找到</td>
+                            </tr>
+                            <tr class="border-t border-border">
+                                <td class="p-2.5 font-mono text-xs">405</td>
+                                <td class="p-2.5 text-muted-foreground">方法不被允许</td>
+                            </tr>
+                            <tr class="border-t border-border">
+                                <td class="p-2.5 font-mono text-xs">429</td>
+                                <td class="p-2.5 text-muted-foreground">请求频率超限</td>
+                            </tr>
+                            <tr class="border-t border-border">
+                                <td class="p-2.5 font-mono text-xs">500</td>
+                                <td class="p-2.5 text-muted-foreground">服务器内部错误</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </template>

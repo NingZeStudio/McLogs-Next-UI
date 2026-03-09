@@ -451,16 +451,21 @@ const scrollToFooter = () => {
 .log-content .line-num {
   vertical-align: top;
   text-align: right;
-  width: 40px;
-  font-size: 13px;
+  width: 45px;
+  font-size: inherit;
   color: #6b7280;
   line-height: inherit;
+  padding-right: 8px;
+  border-right: 1px solid #3d3d3d;
+  margin-right: 8px;
+  user-select: none;
 }
 
 .log-content .line-content {
   padding: 0;
   margin: 0;
   word-break: break-all;
+  vertical-align: top;
 }
 
 .log-content.show-errors-only .entry-no-error {
@@ -525,15 +530,48 @@ mark {
 
 .log-content {
   transition: background-color 0.3s ease, color 0.3s ease;
-  font-family: 'JetBrains Mono', monospace;
-  font-weight: 600;
-  font-size: 13px;
-  line-height: 1;
+  font-family: 'JetBrains Mono', 'Cascadia Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 1.3;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  letter-spacing: 0.02em;
 }
 
 .log-content p {
-  line-height: 1.3;
+  line-height: inherit;
+  margin: 0;
+}
+
+/* 移动端优化 - 更紧凑 */
+@media (max-width: 767px) {
+  .log-content {
+    font-size: 13px;
+    line-height: 1.25;
+  }
+
+  .log-content .line-num {
+    width: 35px;
+    font-size: 12px;
+    padding-right: 6px;
+    margin-right: 6px;
+  }
+}
+
+/* PC 端优化 - 更大字体，更紧凑行高 */
+@media (min-width: 1024px) {
+  .log-content {
+    font-size: 15px;
+    line-height: 1.2;
+  }
+
+  .log-content .line-num {
+    font-size: inherit;
+    width: 50px;
+    padding-right: 10px;
+    margin-right: 10px;
+  }
 }
 </style>
