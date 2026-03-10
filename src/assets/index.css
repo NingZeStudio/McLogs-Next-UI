@@ -72,8 +72,8 @@
     --background: 0 0% 100%;
     --foreground: 222.2 84% 4.9%;
 
-    --font-mono: 'Maple Mono', 'Fira Code', 'Cascadia Code', 'SF Mono', 'Monaco', 'Consolas', monospace;
-    --font-sans: 'PingFang SC', 'Microsoft YaHei', 'Noto Sans CJK SC', 'Source Han Sans SC', 'Maple Mono', 'Fira Code', sans-serif;
+    --font-mono: Fira Code, Maple Mono, Cascadia Code, SF Mono, Monaco, Consolas, monospace;
+    --font-sans: Fira Code, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, Source Han Sans SC, sans-serif;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;

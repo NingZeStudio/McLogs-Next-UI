@@ -113,7 +113,7 @@ const close = () => {
 
 const currentTheme = ref('ocean')
 const displayMode = ref<'light' | 'dark' | 'system'>('system')
-const currentFont = ref('maple_mono')
+const currentFont = ref('fira_code')
 
 const themes = [
   { id: 'ink', name: '水墨', color: 'bg-zinc-500' },
@@ -145,7 +145,7 @@ const setFont = (fontId: string) => {
 const resetSettings = () => {
   currentTheme.value = 'ocean'
   displayMode.value = 'system'
-  currentFont.value = 'maple_mono'
+  currentFont.value = 'fira_code'
 
   localStorage.removeItem('theme_color')
   localStorage.removeItem('display_mode')
@@ -153,7 +153,7 @@ const resetSettings = () => {
 
   applyTheme('ocean')
   applyDisplayMode('system')
-  applyFont('maple_mono')
+  applyFont('fira_code')
 }
 
 const applyTheme = (themeId: string) => {
@@ -220,26 +220,33 @@ const applyDisplayMode = (mode: 'light' | 'dark' | 'system') => {
 }
 
 const applyFont = (fontId: string) => {
-  const fontMap: Record<string, string> = {
-    maple_mono: "'Maple Mono', 'Fira Code', monospace",
-    fira_code: "'Fira Code', 'Maple Mono', monospace"
+  const fontMap: Record<string, { mono: string; sans: string }> = {
+    maple_mono: {
+      mono: 'Maple Mono, Fira Code, monospace',
+      sans: 'Maple Mono, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, Source Han Sans SC, sans-serif'
+    },
+    fira_code: {
+      mono: 'Fira Code, Maple Mono, monospace',
+      sans: 'Fira Code, PingFang SC, Microsoft YaHei, Noto Sans CJK SC, Source Han Sans SC, sans-serif'
+    }
   }
-  const font: string = (fontMap[fontId as keyof typeof fontMap] ?? fontMap.maple_mono) as string
-  document.documentElement.style.setProperty('--font-mono', font)
+  const fonts = fontMap[fontId as keyof typeof fontMap] ?? fontMap.maple_mono
+  document.documentElement.style.setProperty('--font-mono', fonts!.mono)
+  document.documentElement.style.setProperty('--font-sans', fonts!.sans)
 }
 
 onMounted(() => {
   const savedTheme = localStorage.getItem('theme_color')
   const savedDisplayMode = localStorage.getItem('display_mode') as 'light' | 'dark' | 'system' | null
-  const savedFont = localStorage.getItem(LOCAL_STORAGE_KEYS.FONT_FAMILY) ?? 'maple_mono'
+  const savedFont = localStorage.getItem(LOCAL_STORAGE_KEYS.FONT_FAMILY)
 
-  currentTheme.value = savedTheme || currentTheme.value
-  displayMode.value = (savedDisplayMode as 'light' | 'dark' | 'system') || displayMode.value
-  currentFont.value = savedFont
+  if (savedTheme) currentTheme.value = savedTheme
+  if (savedDisplayMode) displayMode.value = savedDisplayMode
+  if (savedFont) currentFont.value = savedFont
 
   applyTheme(currentTheme.value)
   applyDisplayMode(displayMode.value)
-  applyFont(currentFont.value || 'maple_mono')
+  applyFont(currentFont.value || 'fira_code')
 })
 </script>
 
