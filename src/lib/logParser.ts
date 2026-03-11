@@ -1,13 +1,7 @@
-/**
- * 解析日志内容为 HTML 格式
- * @param raw - 原始日志文本
- * @param showLineNumbers - 是否显示行号
- * @returns HTML 格式的日志内容
- */
+// 已知屎山：日志解析逻辑硬编码，扩展新日志格式需修改此函数
 export function parseLog(raw: string, showLineNumbers: boolean = true): string {
   const lines = raw.split('\n')
 
-  // 获取行的级别
   function getLevel(line: string): string {
     if (line.match(/(\/|: |\[)WARN(ING)?(\]|:| )/i)) return 'warning'
     if (line.match(/(\/|: |\[)(ERR(OR)?|FATAL|SEVERE)(\]|:| )/i)) return 'error'
@@ -34,12 +28,10 @@ export function parseLog(raw: string, showLineNumbers: boolean = true): string {
     return html
   }
 
-  // 构建带连续背景分组的表格
   let html = '<table class="log-table"><tbody>'
   let currentGroup: { start: number; level: string; lines: string[] } | null = null
   const groups: Array<{ start: number; level: string; lines: string[] }> = []
 
-  // 首先分组连续的错误/警告行
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i]
     if (i === lines.length - 1 && line === '') continue
@@ -65,7 +57,6 @@ export function parseLog(raw: string, showLineNumbers: boolean = true): string {
   }
   if (currentGroup) groups.push(currentGroup)
 
-  // 渲染分组
   groups.forEach((group) => {
     if (group.level === 'info' || group.level === 'debug') {
       group.lines.forEach((line, idx) => {
@@ -81,7 +72,6 @@ export function parseLog(raw: string, showLineNumbers: boolean = true): string {
         </tr>`
       })
     } else {
-      // 错误/警告组：使用 rowspan 合并背景
       const rowClass = group.level === 'error' ? 'entry-error' : 'entry-warning'
       const bgClass = `bg-${group.level}-group`
 
@@ -110,6 +100,7 @@ export function parseLog(raw: string, showLineNumbers: boolean = true): string {
   return html
 }
 
+// 已知屎山：Minecraft 颜色代码映射硬编码，修改时需同步更新 CSS 类
 function formatContent(text: string): string {
   let out = text.replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
@@ -137,7 +128,6 @@ function formatContent(text: string): string {
     return match
   })
 
-  // Java stack trace highlighting - match lines starting with "at " (including indented)
   if (/^\s*at\s+/.test(text)) {
     out = out.replace(
       /^(\s*)(at\s+)([^(]+)(\(([^)]+)\))?/,
@@ -148,29 +138,23 @@ function formatContent(text: string): string {
     )
   }
 
-  // Match "Caused by:" lines
   out = out.replace(
     /^(Caused by:\s*)(.+)$/,
     '<span class="level-stack-caused-by">$1</span><span class="level-stack-exception">$2</span>'
   )
 
-  // Match exception lines (lines containing Exception/Error/Throwable without "at ")
-  // Match all exception class names in the line (e.g., java.io.UncheckedIOException)
   if (!/^\s*at\s+/.test(text) && /[A-Za-z0-9_$]*(?:Exception|Error|Throwable)\b/.test(text)) {
-    // Match exception class name with optional package prefix
     out = out.replace(
       /([A-Za-z0-9_$]+(?:\.[A-Za-z0-9_$]+)*\.)?([A-Za-z0-9_$]*(?:Exception|Error|Throwable))\b/g,
       '<span class="level-stack-exception">$1$2</span>'
     )
   }
 
-  // Highlight INFO level prefix [xxx/INFO] with green
   out = out.replace(
     /(\[[^\]]*\/INFO\])/g,
     '<span class="level-info-prefix">$1</span>'
   )
 
-  // Highlight timestamp [HH:MM:SS] with blue
   out = out.replace(
     /(\[\d{1,2}:\d{2}:\d{2}\])/g,
     '<span class="level-timestamp">$1</span>'

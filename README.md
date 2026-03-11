@@ -1,5 +1,7 @@
 # McLogs Next UI
 
+> 本项目在开发初期因时间紧迫，曾使用 Qwen 辅助生成部分代码，但核心逻辑均为人工编写。由于 AI 辅助生成的代码存在冗余和低质量问题，我们正在进行全面的代码清理工作。目前清理工作仍在进行中，部分模块可能仍包含待优化的代码，敬请谅解。
+
 McLogs-Next-API的官方开源Web UI实现方案，基于Vue+Typesctipt+TailwindCSS。
 
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat-square)](LICENSE)

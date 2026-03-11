@@ -6,7 +6,7 @@ import { ArrowLeft } from 'lucide-vue-next'
 const route = useRoute()
 const tutorialId = computed(() => route.params.id as string)
 
-// 设置页面标题
+// 警告：教程数据硬编码在此文件中，扩展性差
 onMounted(() => {
   const tutorial = tutorials[tutorialId.value]
   if (tutorial) {
@@ -16,7 +16,6 @@ onMounted(() => {
   }
 })
 
-// 教程内容数据
 const tutorials: Record<string, {
   title: string
   author: string

@@ -9,7 +9,6 @@ import {
 import { setPageTitle } from '@/lib/pageTitle'
 import { t } from '@/lib/i18n'
 
-// Initialize markdown parser without syntax highlighting
 let md: any = null;
 
 const initializeMarkdownParser = async () => {
@@ -19,7 +18,6 @@ const initializeMarkdownParser = async () => {
   });
 };
 
-// Log view composable
 export const useLogView = () => {
   const route = useRoute()
   const id = route.params.id as string
@@ -41,18 +39,18 @@ export const useLogView = () => {
   const showHistory = ref(false)
   const aiAnalysisHistory = ref<any[]>([])
 
-  // Function to format AI result (since computed properties can't be async)
+  // 警告：Markdown 渲染器需异步初始化
   const formatAiResult = async (): Promise<string> => {
     if (!aiResult.value) return ''
     if (aiResult.value.startsWith('Error') || aiResult.value.startsWith('Analysis failed')) {
       return `<div class="text-destructive">${aiResult.value}</div>`
     }
 
+    // 警告：硬编码 50000 字符限制
     if (aiResult.value.length > 50000) {
       return `<div class="text-destructive">分析结果过长，已截断。请直接查看原始日志。</div>`
     }
 
-    // Initialize markdown parser if not already done
     if (!md) {
       await initializeMarkdownParser();
     }

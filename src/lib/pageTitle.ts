@@ -8,11 +8,6 @@ export const pageTitleTemplates = {
   notFound: '页面未找到 - LogShare.CN'
 }
 
-/**
- * 设置页面标题
- * @param template - 模板名称或自定义标题
- * @param params - 模板参数
- */
 export const setPageTitle = (template: keyof typeof pageTitleTemplates | string, params?: { title?: string; id?: string }) => {
   let title = ''
 
@@ -32,11 +27,6 @@ export const setPageTitle = (template: keyof typeof pageTitleTemplates | string,
   document.title = title
 }
 
-/**
- * 获取当前页面标题模板
- * @param routeName - 路由名称
- * @returns 模板名称
- */
 export const getCurrentPageTemplate = (routeName: string | undefined) => {
   switch (routeName) {
     case 'home':

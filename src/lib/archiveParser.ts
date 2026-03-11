@@ -9,31 +9,17 @@ export interface ExtractedFile {
   path: string
 }
 
-/**
- * 检查文件是否为支持的文本文件
- * @param filename - 文件名
- * @returns 是否为文本文件
- */
 export const isTextFile = (filename: string): boolean => {
   const lowerName = filename.toLowerCase()
   return TEXT_EXTENSIONS.some(ext => lowerName.endsWith(ext))
 }
 
-/**
- * 检查文件是否为支持的压缩包格式
- * @param filename - 文件名
- * @returns 是否为压缩包
- */
 export const isArchiveFile = (filename: string): boolean => {
   const lowerName = filename.toLowerCase()
   return lowerName.endsWith('.zip')
 }
 
-/**
- * 解析 ZIP 文件并提取所有文本文件
- * @param file - ZIP 文件
- * @returns 提取的文件数组
- */
+// 警告：ZIP 解析在浏览器端进行，大文件可能导致内存问题
 export const parseZipFile = async (file: File): Promise<ExtractedFile[]> => {
   const zip = new JSZip()
   const contents: ExtractedFile[] = []
@@ -72,11 +58,7 @@ export const parseZipFile = async (file: File): Promise<ExtractedFile[]> => {
   }
 }
 
-/**
- * 解析压缩包文件（自动检测格式）
- * @param file - 压缩包文件
- * @returns 提取的文件数组
- */
+// 已知屎山：仅支持 ZIP 格式，扩展其他格式需修改此函数和 isArchiveFile
 export const parseArchive = async (file: File): Promise<ExtractedFile[]> => {
   const lowerName = file.name.toLowerCase()
 

@@ -6,11 +6,9 @@ import { t } from '@/lib/i18n'
 const isOpen = ref(false)
 const hasBeenShown = ref(false)
 
-// 检查是否已经显示过公告
 onMounted(() => {
   const shown = localStorage.getItem('announcement_shown')
   if (shown !== 'true') {
-    // 延迟显示，让用户先看到页面
     setTimeout(() => {
       isOpen.value = true
       hasBeenShown.value = true
@@ -23,14 +21,12 @@ const closeDialog = () => {
   isOpen.value = false
 }
 
-// 强制重新显示公告（用于调试）
 const forceShowAnnouncement = () => {
   localStorage.removeItem('announcement_shown')
   isOpen.value = true
   hasBeenShown.value = true
 }
 
-// 暴露给父组件的方法
 defineExpose({
   forceShowAnnouncement
 })

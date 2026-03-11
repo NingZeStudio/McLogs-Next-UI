@@ -1,11 +1,3 @@
-/**
- * 語言包配置文件
- * 包含所有支持的語言包定義
- */
-
-/**
- * 簡體中文語言包
- */
 export const zhCN = {
   'log': '日志',
   'logs': '日志',
@@ -96,7 +88,6 @@ export const zhCN = {
   'privacy_policy': '隐私政策',
   'tips': '如果你不曾看懂这个页面所表达的内容，那么请你点击"分享日志"按钮，将链接复制粘贴给可以帮助你的人。谢谢你的配合。',
 
-  // 公告相关
   'close': '关闭',
   'announcement_title': '最新公告',
   'announcement_qq_group_title': '官方 QQ 群开放',
@@ -107,12 +98,10 @@ export const zhCN = {
   'announcement_sponsor_action': '立即赞助',
   'announcement_footer': '感谢您的关注与支持！',
 
-  // 教程相关
   'tutorials': '教程中心',
   'tutorials_desc': '常见问题解决方案和使用教程',
   'tutorial_mobileglues_title': 'Android 端 Minecraft 渲染器配置教程 - MobileGlues',
 
-  // 赞助相关
   'sponsor': '赞助支持',
   'sponsor_title': '赞助我们',
   'sponsor_description': '您的支持是我们前进的动力，所有赞助将用于服务器、API 调用和其他基础设施支出。',
@@ -131,7 +120,6 @@ export const zhCN = {
   'sponsor_wechat': '微信',
   'sponsor_scan_to_sponsor': '扫码赞助',
 
-  // LogView 提示
   'click_share_button_tip': '点击右侧{icon}即可复制分享链接',
   'loading_log': '正在加载日志...',
   'error_title': '错误',
@@ -152,7 +140,6 @@ export const zhCN = {
   'previous_result': '上一个结果',
   'next_result': '下一个结果',
 
-  // HomeView
   'file_too_large_50mb': '文件过大 (最大 50MB)',
   'parse_archive_failed': '解析压缩包失败',
   'no_files_in_archive': '压缩包中没有可识别的文本文件 (.txt, .log, .yml 等)',
@@ -172,14 +159,12 @@ export const zhCN = {
   'failed': '失败',
   'release_to_upload': '释放以上传文件',
 
-  // NotFoundView
   'page_not_found': '页面未找到',
   'page_not_found_desc': '抱歉，您访问的页面不存在或已被移除。请检查 URL 是否正确，或返回首页。',
   'back_to_home': '返回首页',
   'back_to_previous': '返回上一页',
   'contact_admin_hint': '如果您认为这是一个错误，请联系网站管理员。',
 
-  // App.vue
   'team_homepage': '团队主页',
   'open_source': '开源地址',
   'frontend_repo': '前端开源地址',
@@ -201,9 +186,6 @@ export const zhCN = {
   'sponsor_count': '赞助人数',
 };
 
-/**
- * 繁體中文語言包
- */
 export const zhTW = {
   'log': '記錄',
   'logs': '記錄',
@@ -293,7 +275,6 @@ export const zhTW = {
   'api_docs': 'API 文件',
   'tips': '如果你不曾看懂這個頁面所表達的內容，那麼請你點擊"分享記錄"按鈕，將鏈接複製粘貼給可以幫助你的人。謝謝你的配合。',
 
-  // 公告相關
   'close': '關閉',
   'announcement_title': '最新公告',
   'announcement_qq_group_title': '官方 QQ 群開放',
@@ -304,12 +285,10 @@ export const zhTW = {
   'announcement_sponsor_action': '立即贊助',
   'announcement_footer': '感謝您的關注與支持！',
 
-  // 教程相關
   'tutorials': '教程中心',
   'tutorials_desc': '常見問題解決方案和使用教程',
   'tutorial_mobileglues_title': 'Android 端 Minecraft 渲染器配置教程 - MobileGlues',
 
-  // 贊助相關
   'sponsor': '贊助支持',
   'sponsor_title': '贊助我們',
   'sponsor_description': '您的支持是我們前進的動力，所有贊助將用於伺服器、API 調用和其他基礎設施支出。',
@@ -328,7 +307,6 @@ export const zhTW = {
   'sponsor_wechat': '微信',
   'sponsor_scan_to_sponsor': '掃碼贊助',
 
-  // LogView 提示
   'click_share_button_tip': '點擊右側{icon}即可複製分享連結',
   'loading_log': '正在載入日誌...',
   'error_title': '錯誤',
@@ -349,7 +327,6 @@ export const zhTW = {
   'previous_result': '上一個結果',
   'next_result': '下一個結果',
 
-  // HomeView
   'file_too_large_50mb': '檔案過大 (最大 50MB)',
   'parse_archive_failed': '解析壓縮包失敗',
   'no_files_in_archive': '壓縮包中沒有可識別的文字檔案 (.txt, .log, .yml 等)',
@@ -369,14 +346,12 @@ export const zhTW = {
   'failed': '失敗',
   'release_to_upload': '釋放以上傳檔案',
 
-  // NotFoundView
   'page_not_found': '頁面未找到',
   'page_not_found_desc': '抱歉，您訪問的頁面不存在或已被移除。請檢查 URL 是否正確，或返回首頁。',
   'back_to_home': '返回首頁',
   'back_to_previous': '返回上一頁',
   'contact_admin_hint': '如果您認為這是一個錯誤，請聯繫網站管理員。',
 
-  // App.vue
   'team_homepage': '團隊主頁',
   'open_source': '開原始碼',
   'frontend_repo': '前端開源地址',
@@ -398,6 +373,5 @@ export const zhTW = {
   'sponsor_count': '贊助人數',
 };
 
-// 导出所有语言包
 export type LanguagePack = typeof zhCN | typeof zhTW;
 export type LanguageCode = 'zh-CN' | 'zh-TW';

@@ -1,8 +1,3 @@
-/**
- * 赞助者数据模块
- * 可以在这里添加赞助者信息
- */
-
 export interface Sponsor {
   id: number
   name: string
@@ -24,24 +19,16 @@ export interface SponsorConfig {
   current?: number
 }
 
-/**
- * 赞助配置
- */
 export const sponsorConfig: SponsorConfig = {
   title: '赞助我们',
   description: '您的支持是我们前进的动力，所有赞助将用于服务器、API 调用和其他基础设施支出。',
   goal: 200,
   current: 0,
-  // 爱发电链接
   afdianLink: 'https://afdian.com/a/your-id',
   alipayQrCode: new URL('@/assets/img/支付宝.jpg', import.meta.url).href,
   wechatQrCode: new URL('@/assets/img/微信.png', import.meta.url).href,
 }
 
-/**
- * 赞助者列表
- * 手动添加赞助者信息
- */
 export const sponsors: Sponsor[] = [
   {
     id: 1,
@@ -61,23 +48,14 @@ export const sponsors: Sponsor[] = [
   }
 ]
 
-/**
- * 获取赞助总额
- */
 export function getTotalAmount(): number {
   return sponsors.reduce((sum, sponsor) => sum + sponsor.amount, 0)
 }
 
-/**
- * 获取赞助者数量
- */
 export function getSponsorCount(): number {
   return sponsors.length
 }
 
-/**
- * 获取平台图标
- */
 export function getPlatformIcon(platform: Sponsor['platform']): string {
   switch (platform) {
     case 'alipay':
@@ -91,9 +69,6 @@ export function getPlatformIcon(platform: Sponsor['platform']): string {
   }
 }
 
-/**
- * 获取平台颜色
- */
 export function getPlatformColor(platform: Sponsor['platform']): string {
   switch (platform) {
     case 'alipay':
