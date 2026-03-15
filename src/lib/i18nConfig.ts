@@ -173,7 +173,7 @@ export const zhCN = {
   'font_family': '字体',
   'font_maple_mono': 'Maple Mono',
   'font_fira_code': 'Fira Code',
-  'join_qq_group': '加入群聊【梦泽闲聊小窝】',
+  'join_qq_group': '加入群聊【Fold Craft Launcher玩家交流群】',
   'easter_egg_title': '私货',
   'easter_egg_hint': '这些是给最细心的探索者的特别奖励~',
 
@@ -360,7 +360,7 @@ export const zhTW = {
   'font_family': '字體',
   'font_maple_mono': 'Maple Mono',
   'font_fira_code': 'Fira Code',
-  'join_qq_group': '加入群聊【夢澤閒聊小窩】',
+  'join_qq_group': '加入群聊【Fold Craft Launcher玩家交流群】',
   'easter_egg_title': '私貨',
   'easter_egg_hint': '這些是給最細心的探索者的特別獎勵~',
 

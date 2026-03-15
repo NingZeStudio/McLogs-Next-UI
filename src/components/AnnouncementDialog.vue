@@ -86,7 +86,7 @@ defineExpose({
                         {{ t('announcement_qq_group_desc') }}
                       </p>
                       <a
-                        href="https://qm.qq.com/q/XoXSt8askA"
+                        href="https://qm.qq.com/q/RNnWR2HhOS"
                         target="_blank"
                         rel="noopener noreferrer"
                         class="inline-flex items-center gap-2 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg transition-colors text-sm font-medium"
